@@ -2,66 +2,56 @@
 /'Graphic properties
 '/
 
-/'!theme carbon-gray'/
 skinparam linetype ortho
 
 /'Main class
 '/
 class Application {
-    LoginWindow lw
-    void main(String [] args)
+    -LoginWindow lw
+    +void main()
 }
 
 /'Every window of the program.
 Three of them.'/
-class LoginWindow {
-    TextView textToUser
-    Text inputUsername
-    Text inputPassword
-    Button register
-    Button login
+class LoginController {
+    -String userName
+    __
+    +void login()
     __
     The first window the user 
     sees when opening the program.
 
 }
-class RegisterWindow {
-    Text input
-    Button register
+class RegisterController {
+    -String credentials
+    __
+    +void register()
     __
     Window to enter the data for 
     a new user.
 
 }
-class GreetWindow {
-    TextView greet
-}
-
-/'Window controllers. 
-All the actions performed by the 
-windows will be represented in here.'/
-class LoginWindowController {
-
-}
-class RegisterWindowController {
-
-}
-class GreetWindowController {
-
+class GreetController {
+    -String greet
+    __
+    GreetWindow (String greet)
 }
 
 /'Logic part of the program.
 '/
 interface IUserManager {
-    User login()
-    Integer signIn()
+    +void login()
+    +void signIn()
 }
 class IUMImplementation {
+    +void login()
+    +void signIn()
+    -List getUusers()
     __
     DAO. Returns the User objects.
 }
 class UserManagerFactory {
-    IUserManager getUsers()
+    +IUserManager getUsers()
 }
 
 /'Pre-existing Java classes
@@ -69,52 +59,72 @@ class UserManagerFactory {
 class Socket {
     InputStream read()
     OutputStream write()
+    __
+    All this stuff already exists.
 }
 
 /'Objects, etc
 '/
 class User {
-    Integer ID
-    String login
-    String email
-    String fullName
-    String password
-    TimeStamp lastPasswordChange
-    UserStatus status
-    UserPrivilege privilege
+    -Integer ID
+    -String login
+    -String email
+    -String fullName
+    -String password
+    -TimeStamp lastPasswordChange
+    -UserStatus status
+    -UserPrivilege privilege
+    -Collection <SignIn> lastLogins
     __
-    void constructor()
+    +void whatever()
     __
     Object that moves the data.
 }
+class SignIn {
+    -TimeStamp lastSignIn
+}
 /'Encapsulator class
 '/
-class Capsule {
-    User user
-    String message
+class Message {
+    -User user
+    -String message
+    __
+    +User getUser()
+    +String getString()
     __
     Class that stores the user and instruction.
 }
 
 /'Exceptions.'/
 
-Application -- LoginWindow
+Application -- LoginController
 
-/'Windows'/
+LoginController -right- GreetController
+LoginController -left- RegisterController
 
-LoginWindow <-- LoginWindowController
-LoginWindow -right- GreetWindow
-RegisterWindow <-left- RegisterWindowController
-GreetWindow <-right- GreetWindowController
+LoginController -down-> UserManagerFactory
+RegisterController --> UserManagerFactory
 
-LoginWindowController <-left- UserManagerFactory
-RegisterWindowController <-- UserManagerFactory
+LoginController --> IUserManager
+RegisterController --> IUserManager
+
+/' It looks horrible but ya have to indicate it:
+User appears in every class from view.
+'/
+
+/'
+LoginController --> User
+RegisterController --> User
+GreetController -down-> User
+'/
 
 UserManagerFactory -- IUserManager
-IUserManager <|-- IUMImplementation
-IUMImplementation <-- User
+IUserManager <|.. IUMImplementation
+IUMImplementation -right-> User
 
-IUMImplementation <-- Socket
+IUMImplementation -left-> Socket
+IUMImplementation --> Message
 
-Capsule -- User
+User -right-> SignIn
+User <-right- Message
 @enduml

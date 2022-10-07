@@ -1,5 +1,4 @@
 @startuml server
-!theme carbon-gray
 
 
 class Application {
