@@ -74,7 +74,7 @@ class User {
     -TimeStamp lastPasswordChange
     -UserStatus status
     -UserPrivilege privilege
-    -Collection <SignIn> lastLogins
+    -Collection lastLogins
     __
     +void whatever()
     __
