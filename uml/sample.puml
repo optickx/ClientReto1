@@ -1,4 +1,5 @@
-@startuml
+@startuml sample
+!theme carbon-gray
 
 abstract class Usuarie {
     String codUsr
@@ -100,7 +101,7 @@ Trabajador <|-- Repartidor
 
 Establecimiento "1" -- "*" Trabajador
 
-Cliente "1" -down- "*" Pedido
+Cliente "1" -- "*" Pedido
 Pedido "1" -- "1" Menu
 Menu "1" -- "*" Producto
 Producto "1" -- "*" Ingrediente
