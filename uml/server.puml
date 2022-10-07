@@ -1,0 +1,74 @@
+@startuml server
+!theme carbon-gray
+
+
+class Application {
+    __
+    Infinite loop that creates threads.
+}
+
+
+
+class ServerSocket {
+    __
+    Waits requests from the Network.
+}
+
+class Socket {
+    __
+
+}
+
+class Thread {
+}
+
+class Worker {
+}
+
+class DAOFactory {
+    __
+    Returns DBReadable implemented (as DBReader)
+}
+
+interface DBReadable {
+    __
+    void login()
+    void register() 
+    __
+    Methods to be implemented by DAO.
+} 
+
+class DBReader {
+    __
+    Reads data from SQL database.
+}
+
+class Pool {
+    __
+    WTF
+}
+
+class User {
+    Integer ID
+    String login
+    String email
+    String fullName
+    String password
+    TimeStamp lastPasswordChange
+    UserStatus status
+    UserPrivilege privilege
+    __
+    void constructor()
+    __
+    Object that moves the data.
+}
+
+Application --> ServerSocket
+ServerSocket -- Socket
+Thread -- Worker
+DAOFactory -- DBReadable
+DBReader <|-- DBReadable
+DAOFactory -- DBReader
+
+DBReader -- Pool
+@enduml
