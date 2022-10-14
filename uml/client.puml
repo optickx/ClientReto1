@@ -39,8 +39,8 @@ class GreetController {
 /'Logic part of the program.
 '/
 interface IUserManager {
-    +void login()
-    +void signIn()
+    +Message login()
+    +Message signIn()
 }
 class IUMImplementation {
     +void login()
@@ -93,8 +93,24 @@ class Message {
     __
     Class that stores the user and instruction.
 }
+/'types of response'/
+enum Action {
+    INSERT
+    RETURN
+}
 
-/'Exceptions.'/
+/'Exceptions.
+class UserNotFoundException {
+}
+class UsernameNotAvailableException {
+}
+class EmailNotAvailableException {
+}
+class InvalidEmailFormatException {
+}
+class UnmatchedPasswordsException {
+}
+'/
 
 Application -- LoginController
 
@@ -124,6 +140,15 @@ IUMImplementation -right-> User
 IUMImplementation -left-> Socket
 IUMImplementation --> Message
 
-User -right-> SignIn
+User -up-> SignIn
 User <-right- Message
+Action -left- Message
+
+/'
+IUMImplementation -down- UserNotFoundException
+IUMImplementation -down- UsernameNotAvailableException
+IUMImplementation -down- EmailNotAvailableException
+InvalidEmailFormatException -right- RegisterController
+UnmatchedPasswordsException -- RegisterController
+'/
 @enduml

@@ -20,7 +20,7 @@ public class User {
     public User(
     int pID, String pLogin, String pEmail, String pFullName,
     String pPassword, int pLastPasswordChange,
-    int pStatus, UserPrivilege pPrivilege) {
+    int pStatus, int pPrivilege) {
         UserStatus us = 
             (pStatus == 1) ? UserStatus.ENABLED : UserStatus.DISABLED;
         UserPrivilege up = 
