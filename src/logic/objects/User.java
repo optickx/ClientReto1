@@ -131,13 +131,13 @@ public class User implements Comparable <User> {
     @Override
     public String toString() {
         return 
-        "\nID: " + ID +
-        "\nLogin: " + login +
-        "\nEmail: " + email +
-        "\nFull Name: " + fullName +
-        "\nLast password change: " + lastPasswordChange.toString() +
-        "\nStatus:" + status.toString() +
-        "\nPrivilege: " + privilege + 
-        "\nLast login: " + lastLoginString();
+            "\nID: " + ID +
+            "\nLogin: " + login +
+            "\nEmail: " + email +
+            "\nFull Name: " + fullName +
+            "\nLast password change: " + lastPasswordChange.toString() +
+            "\nStatus:" + status.toString() +
+            "\nPrivilege: " + privilege + 
+            "\nLast login: " + lastLoginString();
     }
 }
