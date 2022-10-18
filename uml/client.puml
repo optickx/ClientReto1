@@ -54,7 +54,7 @@ class UserManagerFactory {
     +IUserManager getUsers()
 }
 
-/'Pre-existing Java classes '/
+/'Pre-existing Java classes'/
 class Socket {
     InputStream read()
     OutputStream write()
@@ -69,7 +69,7 @@ class User {
     -String email
     -String fullName
     -String password
-    -TimeStamp lastPasswordChange
+    -Timestamp lastPasswordChange
     -UserStatus status
     -UserPrivilege privilege
     -Collection lastLogins
@@ -79,16 +79,16 @@ class User {
     Object that moves the data.
 }
 class SignIn {
-    -TimeStamp lastSignIn
+    -Timestamp lastSignIn
 }
 /'Encapsulator class
 '/
 class Message {
     -User user
-    -String message
+    -Action action
     __
     +User getUser()
-    +String getString()
+    +Action getAction()
     __
     Class that stores the user and instruction.
 }
@@ -143,13 +143,13 @@ User -up-> SignIn
 User <-right- Message
 Action -left- Message
 
-
+/'
 CustomException <|-- UserNotFoundException
 CustomException <|-- UsernameNotAvailableException
 CustomException <|-- EmailNotAvailableException
 CustomException <|-- InvalidEmailFormatException
 CustomException <|-- UnmatchedPasswordsException
-
+'/
 
 /'
 IUMImplementation -down- UserNotFoundException

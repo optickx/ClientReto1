@@ -3,7 +3,7 @@ package logic.objects;
 import java.security.Timestamp;
 import java.util.Collection;
 
-public class User {
+public class User implements Comparable <User> {
     
     private int ID;
     private String login;
@@ -109,6 +109,23 @@ public class User {
     private String lastLoginString() {
         // TODO: generate string.
         return null;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof User))
+            return false;
+            
+        User usr = (User) obj;
+        return ID == usr.getID()
+            && login.equals(usr.getLogin())
+            && email.equals(usr.getEmail())
+            && privilege.equals(usr.getPrivilege());    
+    }
+    
+    @Override
+    public int compareTo(User usr) {
+        return ID - usr.getID();
     }
     
     @Override
