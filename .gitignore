@@ -31,3 +31,5 @@ replay_pid*
 nbproject/**
 .vscode/**
 lib/nblibraries.properties
+/dist/
+/build/
