@@ -15,15 +15,16 @@ import javafx.stage.Stage;
  * @author 2dam
  */
 public class LoginJavaFX extends Application {
-    // put in there the file with the view.
-    private final String XMLFILE = "LoginFXMLDocument.fxml";
-    
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource(XMLFILE));
-        
+        //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
+        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+
+        //Crea una escena a partir del Parent
         Scene scene = new Scene(root);
-        
+
+        //Establece la escena en el escenario stage y la muestra
         stage.setScene(scene);
         stage.show();
     }
@@ -34,5 +35,4 @@ public class LoginJavaFX extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
 }
