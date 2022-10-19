@@ -131,7 +131,7 @@ public class User implements Comparable <User> {
     @Override
     public String toString() {
         return 
-            "\nID: " + ID +
+            "ID: " + ID +
             "\nLogin: " + login +
             "\nEmail: " + email +
             "\nFull Name: " + fullName +
