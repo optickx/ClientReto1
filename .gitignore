@@ -4,6 +4,9 @@
 # Log file
 *.log
 
+#manifest
+*.mf
+
 # BlueJ files
 *.ctxt
 *.xml
@@ -27,3 +30,4 @@ replay_pid*
 # Useless folders
 nbproject/**
 .vscode/**
+lib/nblibraries.properties
