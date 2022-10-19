@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import view.*;
 
 /**
  *
@@ -35,6 +36,8 @@ public class LoginFXMLDocumentController implements Initializable {
     private PasswordField tfPasswd;
     @FXML
     private Button bAccept;
+     @FXML
+    private Button bRegister;
 
     /**
      * Handle Action event on Accept button
@@ -50,7 +53,7 @@ public class LoginFXMLDocumentController implements Initializable {
                 new Alert(Alert.AlertType.ERROR, "1 o más campos vacios", ButtonType.OK).showAndWait();
             } else {
                 //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
-                Parent root = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("view.greet.Logged.fxml"));
                 //Crea una escena a partir del Parent
                 Scene scene = new Scene(root);
 
@@ -67,11 +70,31 @@ public class LoginFXMLDocumentController implements Initializable {
         //si todo ok ir a la ventana de welcome
     }
 
+    @FXML
+    private void handleRegisterButtonAction(ActionEvent event) {
+
+        try {//Validar que todos los campos llenos
+
+            //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
+            Parent root = FXMLLoader.load(getClass().getResource("view.register.SignUp.fxml"));
+            //Crea una escena a partir del Parent
+            Scene scene = new Scene(root);
+
+            Stage stage = new Stage();
+            //Establece la escena en el escenario stage y la muestra
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
 
-    private static final Logger logger = Logger.getLogger("package basicloginjavafxapplication1");
+   // private static final Logger logger = Logger.getLogger("package basicloginjavafxapplication1");
 
 }
