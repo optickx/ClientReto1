@@ -1,5 +1,5 @@
 package except;
 
-public class UserNotFoundException extends CustomException {
+public class UserNotFoundException extends Exception {
     
 }

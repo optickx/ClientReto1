@@ -1,5 +1,5 @@
 package except;
 
-public class UsernameNotAvailableException extends CustomException {
+public class UsernameNotAvailableException extends Exception {
     
 }

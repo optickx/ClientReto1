@@ -1,5 +1,5 @@
 package except;
 
-public class UnmatchedPasswordsException extends CustomException {
+public class UnmatchedPasswordsException extends Exception {
     
 }
