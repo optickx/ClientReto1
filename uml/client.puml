@@ -81,22 +81,37 @@ class User {
 class SignIn {
     -Timestamp lastSignIn
 }
-/'Encapsulator class
+/' Message classes
 '/
-class Message {
+
+class Request {
     -User user
-    -Action action
+    -RequestType requestType
     __
-    +User getUser()
-    +Action getAction()
+    Stores the action to 
+    be done by the server.
+}
+
+enum RequestType {
+   SIGNUP 
+   SIGNIN 
+}
+
+class Response {
+    -User user
+    -ResponseType responseType
     __
-    Class that stores the user and instruction.
+    Stores the state of the answer,
+    if it went right or wrong.
 }
-/'types of response'/
-enum Action {
-    INSERT
-    RETURN
+enum ResponseType {
+    OK
+    LOGIN_CREDENTIAL_ERROR
+    SERVER_ERROR
+    USERNAME_ERROR
+    EMAIL_ERROR
 }
+
 
 /'Exceptions.
 '/
@@ -153,13 +168,19 @@ GreetController -down-> User
 UserManagerFactory -- IUserManager
 IUserManager <|.. IUMImplementation
 IUMImplementation -right-> User
-
 IUMImplementation -left-> Socket
-IUMImplementation --> Message
-
 User -up-> SignIn
-User <-right- Message
-Action -left- Message
+
+
+IUMImplementation --> Request 
+IUMImplementation -left-> Response
+
+User <-down- Request 
+RequestType -up-Request 
+
+User -down- Response
+ResponseType -up- Response
+
 
 EmailErrorException -right- RegisterController
 UnmatchedPasswordsException -- RegisterController
