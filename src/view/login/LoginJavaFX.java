@@ -23,7 +23,8 @@ public class LoginJavaFX extends Application {
 
         //Crea una escena a partir del Parent
         Scene scene = new Scene(root);
-
+        stage.setTitle("Sign In");
+        stage.setResizable(false);
         //Establece la escena en el escenario stage y la muestra
         stage.setScene(scene);
         stage.show();

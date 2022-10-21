@@ -4,9 +4,10 @@
  */
 package view.greet;
 
-import view.login.*;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,13 +17,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import logic.objects.*;
+import static logic.objects.UserStatus.ENABLED;
 import view.*;
 
 /**
@@ -30,13 +29,56 @@ import view.*;
  * @author 2dam
  */
 public class LoggedFXMLDocumentController implements Initializable {
-    
+
+    @FXML
+    private Label lWelcome;
+    @FXML
+    private Button bLogOut;
+
     //Label con nombre del usuario y welcome
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        User us = getUser();
+        lWelcome.setText("Welcome " + us.getLogin() + " to our aplication");
     }
-    
-    //Boton de cerrar sesion 
 
+    @FXML
+    private User getUser() {
+        User us = new User();
+        us.setID(1);
+        us.setLogin("Pepito45");
+        us.setEmail("pepito@gmail.com");
+        us.setFullName("Pepe Jolinnas");
+        us.setPassword("abcd*1234");
+        us.setLastPasswordChange(null);
+        us.setStatus(UserStatus.ENABLED);
+        us.setPrivilege(UserPrivilege.USER);
+        return us;
+    }
+
+    @FXML
+    private void handleLogOutButtonAction(ActionEvent event) {
+
+        try {//Validar que todos los campos llenos
+
+            //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
+            Parent root = FXMLLoader.load(getClass().getResource("../login/Login.fxml"));
+            //Crea una escena a partir del Parent
+            Scene scene = new Scene(root);
+
+            Stage stage = new Stage();
+            //Localizar la ventana Logged
+            Stage stageN = (Stage) bLogOut.getScene().getWindow();
+            //Cerrar la ventana Logged
+            stageN.close();
+            stage.setTitle("Sign In");
+            stage.setResizable(false);
+            //Establece la escena en el escenario stage y la muestra
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoggedFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

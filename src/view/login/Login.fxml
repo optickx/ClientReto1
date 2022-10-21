@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -15,12 +14,13 @@
                 <Image url="@login.jpg" />
             </image>
         </ImageView>
-        <Button fx:id="bAccept" layoutX="195.0" layoutY="228.0" mnemonicParsing="false" onAction="#handleAcceptButtonAction" prefHeight="36.0" prefWidth="70.0" text="Accept" />
+        <Label layoutX="207.0" layoutY="50.0" text="Login" />
+        <TextField fx:id="tfLogin" layoutX="148.0" layoutY="96.0" promptText="Username" />
         <PasswordField fx:id="tfPasswd" layoutX="148.0" layoutY="141.0" promptText="Password" />
         <Label layoutX="173.0" layoutY="193.0" prefHeight="19.0" prefWidth="114.0" text="No account?" />
         <Label layoutX="243.0" layoutY="193.0" prefHeight="19.0" prefWidth="51.0" text="Register" textFill="#0615e8" />
-        <TextField fx:id="tfLogin" layoutX="148.0" layoutY="96.0" promptText="Username" />
-        <Label layoutX="207.0" layoutY="50.0" text="Login" />
+      <Button fx:id="bRegister" layoutX="243.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleRegisterButtonAction" opacity="0.0" prefHeight="25.0" prefWidth="45.0" text="Register" />
+        <Button fx:id="bAccept" layoutX="195.0" layoutY="228.0" mnemonicParsing="false" onAction="#handleAcceptButtonAction" prefHeight="36.0" prefWidth="70.0" text="Accept" />
         <ImageView fitHeight="19.0" fitWidth="23.0" layoutX="121.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@userIcon.png" />
@@ -31,6 +31,5 @@
                 <Image url="@lockIcon.png" />
             </image>
         </ImageView>
-      <Button fx:id="bRegister" layoutX="243.0" layoutY="190.0" mnemonicParsing="false" onAction="" opacity="0.0" prefHeight="25.0" prefWidth="45.0" text="Register" />
     </children>
 </Pane>

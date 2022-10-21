@@ -21,8 +21,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.*;
+import view.greet.LoggedFXMLDocumentController;
 
 /**
  *
@@ -36,7 +38,7 @@ public class LoginFXMLDocumentController implements Initializable {
     private PasswordField tfPasswd;
     @FXML
     private Button bAccept;
-     @FXML
+    @FXML
     private Button bRegister;
 
     /**
@@ -47,21 +49,27 @@ public class LoginFXMLDocumentController implements Initializable {
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
 
-        try {//Validar que todos los campos llenos
-            if (this.tfLogin.getText().isEmpty() || this.tfPasswd.getText().isEmpty()) {
-                //alerta de que necesitan estar llenos
-                new Alert(Alert.AlertType.ERROR, "1 o más campos vacios", ButtonType.OK).showAndWait();
-            } else {
-                //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
-                Parent root = FXMLLoader.load(getClass().getResource("view.greet.Logged.fxml"));
+        try {   //Cargar fxml file
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../greet/Logged.fxml"));
+                Parent root = (Parent) loader.load();
+                //COnseguir el controlador de la ventana Logged
+                
                 //Crea una escena a partir del Parent
                 Scene scene = new Scene(root);
 
                 Stage stage = new Stage();
+                
+               /* LoggedFXMLDocumentController controller = (LoggedFXMLDocumentController)loader.getController());
+                controller.setStage(stage);*/
+                //Localizar la ventana login
+                Stage stageN = (Stage) bAccept.getScene().getWindow();
+                //Cerrar la ventana login
+                stageN.close();
+                stage.setResizable(false);
+                stage.setTitle("Logged");
                 //Establece la escena en el escenario stage y la muestra
                 stage.setScene(scene);
                 stage.show();
-            }
 
         } catch (IOException ex) {
             Logger.getLogger(LoginFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,14 +84,17 @@ public class LoginFXMLDocumentController implements Initializable {
         try {//Validar que todos los campos llenos
 
             //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
-            Parent root = FXMLLoader.load(getClass().getResource("view.register.SignUp.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../register/SignUp.fxml"));
             //Crea una escena a partir del Parent
             Scene scene = new Scene(root);
 
             Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Sign Up");
+            stage.setResizable(false);
             //Establece la escena en el escenario stage y la muestra
             stage.setScene(scene);
-            stage.show();
+            stage.showAndWait();
 
         } catch (IOException ex) {
             Logger.getLogger(LoginFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,6 +106,5 @@ public class LoginFXMLDocumentController implements Initializable {
         // TODO
     }
 
-   // private static final Logger logger = Logger.getLogger("package basicloginjavafxapplication1");
-
+    // private static final Logger logger = Logger.getLogger("package basicloginjavafxapplication1");
 }
