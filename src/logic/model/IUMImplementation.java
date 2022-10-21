@@ -3,7 +3,7 @@ package logic.model;
 public class IUMImplementation implements IUserManager {
 
     @Override
-    public void login() {
+    public void signIn() {
         // TODO Auto-generated method stub
         
     }
@@ -11,7 +11,7 @@ public class IUMImplementation implements IUserManager {
     
 
     @Override
-    public void signIn() {
+    public void signUp() {
         // TODO Auto-generated method stub   
     }
 }
