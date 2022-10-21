@@ -5,23 +5,14 @@ import logic.objects.User;
 public class IUMImplementation implements IUserManager {
 
     @Override
-<<<<<<< HEAD
-    public User signIn() {
-=======
-    public void signIn() {
->>>>>>> 7ec58fc8afc9353c4db309a87dae1b6081e664ab
+    public User signIn(User pUser) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-<<<<<<< HEAD
-    public User signUp() {
+    public User signUp(User pUser) {
         // TODO Auto-generated method stub
         return null;
-=======
-    public void signUp() {
-        // TODO Auto-generated method stub   
->>>>>>> 7ec58fc8afc9353c4db309a87dae1b6081e664ab
     }
 }
