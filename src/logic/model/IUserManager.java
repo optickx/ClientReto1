@@ -1,7 +1,9 @@
 package logic.model;
 
+import logic.objects.User;
+
 public interface IUserManager {
     /**whatever. */    
-    public void login();
-    public void signIn();
+    public User signIn();
+    public User signUp();
 }

@@ -1,17 +1,18 @@
 package logic.model;
 
+import logic.objects.User;
+
 public class IUMImplementation implements IUserManager {
 
     @Override
-    public void login() {
+    public User signIn() {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
-    
-
     @Override
-    public void signIn() {
-        // TODO Auto-generated method stub   
+    public User signUp() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
