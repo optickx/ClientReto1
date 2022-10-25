@@ -19,7 +19,7 @@ public class User implements Comparable <User> {
 
     public User(
     int pID, String pLogin, String pEmail, String pFullName,
-    String pPassword, int pLastPasswordChange,
+    String pPassword, java.sql.Timestamp t,
     int pStatus, int pPrivilege) {
         UserStatus us = 
             (pStatus == 1) ? UserStatus.ENABLED : UserStatus.DISABLED;
