@@ -13,8 +13,8 @@
                 <Image url="@login.jpg" />
             </image>
         </ImageView>
-        <TextField fx:id="tfLogin" layoutX="148.0" layoutY="96.0" promptText="Login" onAction="#handleTextFieldAction"/>
-        <PasswordField fx:id="tfPasswd" layoutX="148.0" layoutY="141.0" promptText="Password" onAction="#handleTextFieldAction"/>
+        <TextField fx:id="tfLogin" layoutX="148.0" layoutY="96.0" promptText="Login"/>
+        <PasswordField fx:id="cpPassword" layoutX="148.0" layoutY="141.0" promptText="Password"/>
         <Label layoutX="173.0" layoutY="193.0" prefHeight="19.0" prefWidth="114.0" text="No account?" />
         <Label layoutX="243.0" layoutY="193.0" prefHeight="19.0" prefWidth="51.0" text="SignUp" textFill="#0615e8" />
       <Button fx:id="btnSignUp" layoutX="243.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleRegisterButtonAction" opacity="0.0" prefHeight="25.0" prefWidth="45.0" />

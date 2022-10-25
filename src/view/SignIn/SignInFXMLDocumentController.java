@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +35,7 @@ public class SignInFXMLDocumentController implements Initializable {
     @FXML
     private TextField tfLogin;
     @FXML
-    private PasswordField tfPasswd;
+    private PasswordField cpPassword;
     @FXML
     private Button btnAccept;
     @FXML
@@ -80,15 +81,6 @@ public class SignInFXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void handleTextFieldAction(ActionEvent event) {
-        if (this.tfLogin.getText().isEmpty() || this.tfPasswd.getText().isEmpty()) {
-            this.btnAccept.setDisable(true);
-        }else{
-            this.btnAccept.setDisable(false);
-        }
-    }
-
-    @FXML
     private void handleRegisterButtonAction(ActionEvent event) {
 
         try {//Validar que todos los campos llenos
@@ -115,12 +107,32 @@ public class SignInFXMLDocumentController implements Initializable {
         //Se desabilita el botton Accept
         btnAccept.setDisable(true);
         //Se enfoc el campo login
-        tfLogin.requestFocus();
+        tfLogin.textProperty().addListener(this::textChanged);
+        cpPassword.textProperty().addListener(this::textChanged);
     }
 
     // private static final Logger logger = Logger.getLogger("package basicloginjavafxapplication1");
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initSignIn(location, resources);
+    }
+//Cambio de texto para volver a habiitar el botton accept
+  private void textChanged(ObservableValue observable,
+             String oldValue,
+             String newValue){
+        //If text fields values are too long, show error message and disable 
+        //accept button
+        if(tfLogin.getText().trim().length()>25 ||
+           cpPassword.getText().trim().length()>25){
+            //showErrorAlert("La longitud máxima del campo es de 25 caracteres.");
+            btnAccept.setDisable(true);
+        }
+        //If text fields are empty disable accept buttton
+        else if(tfLogin.getText().trim().isEmpty()||
+                cpPassword.getText().trim().isEmpty())
+            btnAccept.setDisable(true);
+        //Else, enable accept button
+        else btnAccept.setDisable(false);
+        
     }
 }
