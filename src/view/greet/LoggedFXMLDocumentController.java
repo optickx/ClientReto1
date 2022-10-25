@@ -31,15 +31,15 @@ import view.*;
 public class LoggedFXMLDocumentController implements Initializable {
 
     @FXML
-    private Label lWelcome;
+    private Label lblWelcome;
     @FXML
-    private Button bLogOut;
+    private Button btnLogOut;
 
     //Label con nombre del usuario y welcome
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         User us = getUser();
-        lWelcome.setText("Welcome " + us.getLogin() + " to our aplication");
+        lblWelcome.setText("Welcome " + us.getLogin() + " to our aplication");
     }
 
     @FXML
@@ -68,7 +68,7 @@ public class LoggedFXMLDocumentController implements Initializable {
 
             Stage stage = new Stage();
             //Localizar la ventana Logged
-            Stage stageN = (Stage) bLogOut.getScene().getWindow();
+            Stage stageN = (Stage) btnLogOut.getScene().getWindow();
             //Cerrar la ventana Logged
             stageN.close();
             stage.setTitle("Sign In");

@@ -24,9 +24,9 @@ public class RegisterFXMLDocumentController implements Initializable {
     @FXML
     private TextField tfFullName;
     @FXML
-    private TextField pfPassword;
+    private TextField cpPassword;
     @FXML
-    private TextField pfConfirmPassword;
+    private TextField cpConfirm;
     @FXML
     private TextField tfUsername;
     @FXML
@@ -53,7 +53,7 @@ public class RegisterFXMLDocumentController implements Initializable {
     private void handleAcceptButtonAction(ActionEvent event) {
 
         //Validar que todos los campos llenos
-        if (this.tfEmail.getText().isEmpty() || this.tfUsername.getText().isEmpty() || this.tfFullName.getText().isEmpty() || this.pfPassword.getText().isEmpty() || this.pfConfirmPassword.getText().isEmpty()) {
+        if (this.tfEmail.getText().isEmpty() || this.tfUsername.getText().isEmpty() || this.tfFullName.getText().isEmpty() || this.cpPassword.getText().isEmpty() || this.cpConfirm.getText().isEmpty()) {
             //alerta de que necesitan estar llenos
             new Alert(Alert.AlertType.ERROR, "1 or more empty fields", ButtonType.OK).showAndWait();
         } else {
@@ -71,7 +71,7 @@ public class RegisterFXMLDocumentController implements Initializable {
                 }
 
                 //Validar que la confirm password coincida
-                if (!(pfPassword.getText().equals(pfConfirmPassword.getText()))) {
+                if (!(cpPassword.getText().equals(cpConfirm.getText()))) {
                     //Aviso de contraseñas no coincidentes
                     lblConfirmPassword.setText("Passwords do not match");
                 } else {
@@ -109,8 +109,8 @@ public class RegisterFXMLDocumentController implements Initializable {
         //Vacía todos los campos 
         tfEmail.setText("");
         tfFullName.setText("");
-        pfPassword.setText("");
-        pfConfirmPassword.setText("");
+        cpPassword.setText("");
+        cpConfirm.setText("");
         tfUsername.setText("");
         lblConfirmPassword.setText("");
         lblEmail.setText("");

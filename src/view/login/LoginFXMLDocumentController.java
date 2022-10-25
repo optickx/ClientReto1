@@ -37,9 +37,9 @@ public class LoginFXMLDocumentController implements Initializable {
     @FXML
     private PasswordField tfPasswd;
     @FXML
-    private Button bAccept;
+    private Button btnAccept;
     @FXML
-    private Button bRegister;
+    private Button btnSignUp;
 
     /**
      * Handle Action event on Accept button
@@ -48,34 +48,45 @@ public class LoginFXMLDocumentController implements Initializable {
      */
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
-
         try {   //Cargar fxml file
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../greet/Logged.fxml"));
-                Parent root = (Parent) loader.load();
-                //COnseguir el controlador de la ventana Logged
-                
-                //Crea una escena a partir del Parent
-                Scene scene = new Scene(root);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../greet/Logged.fxml"));
+            Parent root = (Parent) loader.load();
+            //COnseguir el controlador de la ventana Logged
 
-                Stage stage = new Stage();
-                
-               /* LoggedFXMLDocumentController controller = (LoggedFXMLDocumentController)loader.getController());
+            //Crea una escena a partir del Parent
+            Scene scene = new Scene(root);
+
+            Stage stage = new Stage();
+
+            /* LoggedFXMLDocumentController controller = (LoggedFXMLDocumentController)loader.getController());
                 controller.setStage(stage);*/
-                //Localizar la ventana login
-                Stage stageN = (Stage) bAccept.getScene().getWindow();
-                //Cerrar la ventana login
-                stageN.close();
-                stage.setResizable(false);
-                stage.setTitle("Logged");
-                //Establece la escena en el escenario stage y la muestra
-                stage.setScene(scene);
-                stage.show();
+            //Localizar la ventana login
+            Stage stageN = (Stage) btnAccept.getScene().getWindow();
+            //Cerrar la ventana login
+            stageN.close();
+            //Ventana no redimensionable
+            stage.setResizable(false);
+            //Nombre de la ventana
+            stage.setTitle("Logged");
+            //Establece la escena en el escenario stage y la muestra
+            stage.setScene(scene);
+            stage.show();
 
         } catch (IOException ex) {
             Logger.getLogger(LoginFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+
+            //Validar contraseña y usuario y mandar alerta en caso de error
+            //si todo ok ir a la ventana de welcome
         }
-//Validar contraseña y usuario y mandar alerta en caso de error
-        //si todo ok ir a la ventana de welcome
+    }
+
+    @FXML
+    private void handleTextFieldAction(ActionEvent event) {
+        if (this.tfLogin.getText().isEmpty() || this.tfPasswd.getText().isEmpty()) {
+            this.btnAccept.setDisable(true);
+        }else{
+            this.btnAccept.setDisable(false);
+        }
     }
 
     @FXML
@@ -101,10 +112,16 @@ public class LoginFXMLDocumentController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    public void initSignIn(URL url, ResourceBundle rb) {
+        //Se desabilita el botton Accept
+        btnAccept.setDisable(true);
+        //Se enfoc el campo login
+        tfLogin.requestFocus();
     }
 
     // private static final Logger logger = Logger.getLogger("package basicloginjavafxapplication1");
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initSignIn(location, resources);
+    }
 }
