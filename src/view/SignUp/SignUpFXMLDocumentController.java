@@ -139,15 +139,15 @@ public class SignUpFXMLDocumentController implements Initializable {
         cpConfirm.textProperty().addListener(this::textPropertyChange);
     }
 
-/**
- * Text changed event handler. Validar que los campos login, email, full name,
- * password y confirm password están informados.
- *
- * @param observable The value being observed.
- * @param oldValue The old value of the observable.
- * @param newValue The new value of the observable.
- */
-private void textPropertyChange(ObservableValue observable,
+    /**
+     * Text changed event handler. Validar que los campos login, email, full
+     * name, password y confirm password están informados.
+     *
+     * @param observable The value being observed.
+     * @param oldValue The old value of the observable.
+     * @param newValue The new value of the observable.
+     */
+    private void textPropertyChange(ObservableValue observable,
             String oldValue,
             String newValue) {
         //If text fields values are longer than 25 (max value in Database), show error message and disable 

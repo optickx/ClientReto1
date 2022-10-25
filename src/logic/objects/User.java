@@ -44,6 +44,10 @@ public class User implements Comparable <User> {
     public User() {
     }
 
+    public User(int i, String fBe9, String nereaoceja2003gmailcom, String nerea_Oceja, String abcd1234, Object object, int i0, int i1) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     // Getters.
     public int getID() {
         return ID;

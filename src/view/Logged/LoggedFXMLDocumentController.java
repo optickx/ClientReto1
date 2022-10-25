@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import logic.UserManagerFactory;
 import logic.objects.*;
 import static logic.objects.UserStatus.ENABLED;
 import view.*;
@@ -28,32 +29,21 @@ import view.*;
  *
  * @author 2dam
  */
-public class LoggedFXMLDocumentController implements Initializable {
+public class LoggedFXMLDocumentController {
 
     @FXML
     private Label lblWelcome;
     @FXML
     private Button btnLogOut;
 
-    //Label con nombre del usuario y welcome
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        User us = getUser();
-        lblWelcome.setText("Welcome " + us.getLogin() + " to our aplication");
-    }
+    private User user;
 
-    @FXML
-    private User getUser() {
-        User us = new User();
-        us.setID(1);
-        us.setLogin("Pepito45");
-        us.setEmail("pepito@gmail.com");
-        us.setFullName("Pepe Jolinnas");
-        us.setPassword("abcd*1234");
-        us.setLastPasswordChange(null);
-        us.setStatus(UserStatus.ENABLED);
-        us.setPrivilege(UserPrivilege.USER);
-        return us;
+    //Label con nombre del usuario y welcome
+    public void initLogged(User user) {
+        this.user = user;
+        /* User us1=new User();
+        User us = UserManagerFactory.getAccess().signUp(us1);*/
+        lblWelcome.setText("Welcome " + user.getLogin() + " to our aplication");
     }
 
     @FXML
@@ -81,4 +71,9 @@ public class LoggedFXMLDocumentController implements Initializable {
             Logger.getLogger(LoggedFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void setStage(Stage stage) {
+
+    }
+
 }
