@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXML2.java to edit this template
  */
-package view.login;
+package view.signIn;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,13 +24,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.*;
-import view.greet.LoggedFXMLDocumentController;
 
 /**
  *
  * @author 2dam
  */
-public class LoginFXMLDocumentController implements Initializable {
+public class SignInFXMLDocumentController implements Initializable {
 
     @FXML
     private TextField tfLogin;
@@ -49,7 +48,7 @@ public class LoginFXMLDocumentController implements Initializable {
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
         try {   //Cargar fxml file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../greet/Logged.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../logged/Logged.fxml"));
             Parent root = (Parent) loader.load();
             //COnseguir el controlador de la ventana Logged
 
@@ -73,7 +72,7 @@ public class LoginFXMLDocumentController implements Initializable {
             stage.show();
 
         } catch (IOException ex) {
-            Logger.getLogger(LoginFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
 
             //Validar contraseña y usuario y mandar alerta en caso de error
             //si todo ok ir a la ventana de welcome
@@ -95,7 +94,7 @@ public class LoginFXMLDocumentController implements Initializable {
         try {//Validar que todos los campos llenos
 
             //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
-            Parent root = FXMLLoader.load(getClass().getResource("../register/SignUp.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../signUp/SignUp.fxml"));
             //Crea una escena a partir del Parent
             Scene scene = new Scene(root);
 
@@ -108,7 +107,7 @@ public class LoginFXMLDocumentController implements Initializable {
             stage.showAndWait();
 
         } catch (IOException ex) {
-            Logger.getLogger(LoginFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

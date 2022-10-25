@@ -1,4 +1,4 @@
-package view.register;
+package view.signUp;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,7 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class RegisterFXMLDocumentController implements Initializable {
+public class SignUpFXMLDocumentController implements Initializable {
 
     /**
      * @author Eneko and Roke

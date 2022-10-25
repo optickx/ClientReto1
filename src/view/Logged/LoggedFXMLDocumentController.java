@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXML2.java to edit this template
  */
-package view.greet;
+package view.logged;
 
 import java.io.IOException;
 import java.net.URL;
@@ -62,7 +62,7 @@ public class LoggedFXMLDocumentController implements Initializable {
         try {//Validar que todos los campos llenos
 
             //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
-            Parent root = FXMLLoader.load(getClass().getResource("../login/Login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../signIn/SignIn.fxml"));
             //Crea una escena a partir del Parent
             Scene scene = new Scene(root);
 
