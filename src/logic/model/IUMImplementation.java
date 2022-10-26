@@ -12,9 +12,7 @@ public class IUMImplementation implements IUserManager {
     @Override
     public User signIn(User pUser) {
         Timestamp t = Timestamp.valueOf("");
-        return new User(0, "FBe9", "nereaoceja2003@gmail.com",
-         "Nerea Oceja", "abcd*1234", 
-        t, 1, 1);
+        return null;
     }
 
     @Override
