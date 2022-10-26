@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXML2.java to edit this template
  */
-package view.greet;
+package view.logged;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import logic.UserManagerFactory;
 import logic.objects.*;
 import static logic.objects.UserStatus.ENABLED;
 import view.*;
@@ -28,32 +29,21 @@ import view.*;
  *
  * @author 2dam
  */
-public class LoggedFXMLDocumentController implements Initializable {
+public class LoggedFXMLDocumentController {
 
     @FXML
-    private Label lWelcome;
+    private Label lblWelcome;
     @FXML
-    private Button bLogOut;
+    private Button btnLogOut;
+
+    private User user;
 
     //Label con nombre del usuario y welcome
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        User us = getUser();
-        lWelcome.setText("Welcome " + us.getLogin() + " to our aplication");
-    }
-
-    @FXML
-    private User getUser() {
-        User us = new User();
-        us.setID(1);
-        us.setLogin("Pepito45");
-        us.setEmail("pepito@gmail.com");
-        us.setFullName("Pepe Jolinnas");
-        us.setPassword("abcd*1234");
-        us.setLastPasswordChange(null);
-        us.setStatus(UserStatus.ENABLED);
-        us.setPrivilege(UserPrivilege.USER);
-        return us;
+    public void initLogged(User user) {
+        this.user = user;
+        /* User us1=new User();
+        User us = UserManagerFactory.getAccess().signUp(us1);*/
+        lblWelcome.setText("Welcome " + user.getLogin() + " to our aplication");
     }
 
     @FXML
@@ -62,13 +52,13 @@ public class LoggedFXMLDocumentController implements Initializable {
         try {//Validar que todos los campos llenos
 
             //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
-            Parent root = FXMLLoader.load(getClass().getResource("../login/Login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../signIn/SignIn.fxml"));
             //Crea una escena a partir del Parent
             Scene scene = new Scene(root);
 
             Stage stage = new Stage();
             //Localizar la ventana Logged
-            Stage stageN = (Stage) bLogOut.getScene().getWindow();
+            Stage stageN = (Stage) btnLogOut.getScene().getWindow();
             //Cerrar la ventana Logged
             stageN.close();
             stage.setTitle("Sign In");
@@ -81,4 +71,9 @@ public class LoggedFXMLDocumentController implements Initializable {
             Logger.getLogger(LoggedFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void setStage(Stage stage) {
+
+    }
+
 }

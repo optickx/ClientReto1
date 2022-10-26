@@ -44,7 +44,6 @@ public class User implements Comparable <User> {
         this.status = pStatus;
         this.privilege = pPrivilege; 
     }
-
     // Getters.
     public int getID() {
         return ID;

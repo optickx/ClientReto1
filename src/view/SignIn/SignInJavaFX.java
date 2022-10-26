@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXML.java to edit this template
  */
-package view.login;
+package view.signIn;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,12 +14,12 @@ import javafx.stage.Stage;
  *
  * @author 2dam
  */
-public class LoginJavaFX extends Application {
+public class SignInJavaFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
         //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("SignIn.fxml"));
 
         //Crea una escena a partir del Parent
         Scene scene = new Scene(root);
