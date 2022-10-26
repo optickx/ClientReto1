@@ -40,8 +40,8 @@ class GreetController {
 /'Logic part of the program.
 '/
 interface IUserManager {
-    +Message login()
     +Message signIn()
+    +Message signUp()
 }
 class IUMImplementation {
     +void login()
@@ -81,35 +81,68 @@ class User {
 class SignIn {
     -Timestamp lastSignIn
 }
-/'Encapsulator class
+/' Message classes
 '/
-class Message {
+
+class Request {
     -User user
-    -Action action
+    -RequestType requestType
     __
-    +User getUser()
-    +Action getAction()
-    __
-    Class that stores the user and instruction.
-}
-/'types of response'/
-enum Action {
-    INSERT
-    RETURN
+    Stores the action to 
+    be done by the server.
 }
 
+enum RequestType {
+   SIGNUP 
+   SIGNIN 
+}
+
+class Response {
+    -User user
+    -ResponseType responseType
+    __
+    Stores the state of the answer,
+    if it went right or wrong.
+}
+enum ResponseType {
+    OK
+    LOGIN_CREDENTIAL_ERROR
+    SERVER_ERROR
+    USERNAME_ERROR
+    EMAIL_ERROR
+}
+
+
 /'Exceptions.
-class UserNotFoundException {
-}
-class UsernameNotAvailableException {
-}
-class EmailNotAvailableException {
-}
-class InvalidEmailFormatException {
-}
-class UnmatchedPasswordsException {
-}
 '/
+class UnmatchedPasswordsException {
+    +String reason
+    __
+    The passwords are not the same.
+}
+
+
+class EmailErrorException {
+    -String email
+    -TYPE reason
+    __
+    Thrown when the 
+    email is not valid.
+}
+enum EmailErrorExceptionTYPE {
+    INVALID_PATTERN
+    ALREADY_IN_USE
+}
+
+class UsernameErrorException {
+    -String userName
+    -TYPE reason
+}
+enum UsernameErrorExceptionTYPE {
+    USER_NOT_FOUND
+    USERNAME_NOT_AVAILABLE
+}
+
 
 Application -- LoginController
 
@@ -135,27 +168,25 @@ GreetController -down-> User
 UserManagerFactory -- IUserManager
 IUserManager <|.. IUMImplementation
 IUMImplementation -right-> User
-
 IUMImplementation -left-> Socket
-IUMImplementation --> Message
-
 User -up-> SignIn
-User <-right- Message
-Action -left- Message
 
-/'
-CustomException <|-- UserNotFoundException
-CustomException <|-- UsernameNotAvailableException
-CustomException <|-- EmailNotAvailableException
-CustomException <|-- InvalidEmailFormatException
-CustomException <|-- UnmatchedPasswordsException
-'/
 
-/'
-IUMImplementation -down- UserNotFoundException
-IUMImplementation -down- UsernameNotAvailableException
-IUMImplementation -down- EmailNotAvailableException
-InvalidEmailFormatException -right- RegisterController
+IUMImplementation --> Request 
+IUMImplementation -left-> Response
+
+User <-down- Request 
+RequestType -up-Request 
+
+User -down- Response
+ResponseType -up- Response
+
+
+EmailErrorException -right- RegisterController
 UnmatchedPasswordsException -- RegisterController
-'/
+UsernameErrorException -- RegisterController
+UsernameErrorException -- LoginController
+
+EmailErrorException -- EmailErrorExceptionTYPE
+UsernameErrorException -up- UsernameErrorExceptionTYPE
 @enduml

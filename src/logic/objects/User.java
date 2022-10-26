@@ -1,7 +1,7 @@
 package logic.objects;
 
 import java.security.Timestamp;
-import java.util.Collection;
+import java.util.List;
 
 public class User implements Comparable <User> {
     
@@ -13,24 +13,28 @@ public class User implements Comparable <User> {
     private Timestamp lastPasswordChange;
     private UserStatus status;
     private UserPrivilege privilege;
-    private Collection lastLogin;
+    private List <Timestamp> lastLogins;
 
-
+    public User(String pLogin, String pPassword) {
+        login = pLogin;
+        password = pPassword;
+    }
 
     public User(
     int pID, String pLogin, String pEmail, String pFullName,
     String pPassword, int pLastPasswordChange,
-    int pStatus, int pPrivilege) {
-        UserStatus us = 
+    int pStatus, int pPrivilege, List <Timestamp> pLastLogins) {
+        
+        status = 
             (pStatus == 1) ? UserStatus.ENABLED : UserStatus.DISABLED;
-        UserPrivilege up = 
+        privilege = 
             (pPrivilege == 1) ? UserPrivilege.ADMIN : UserPrivilege.USER;
     }
 
     public User(
     int pID, String pLogin, String pEmail, String pFullName,
     String pPassword, Timestamp pLastPasswordChange,
-    UserStatus pStatus, UserPrivilege pPrivilege) {
+    UserStatus pStatus, UserPrivilege pPrivilege, List <Timestamp> pLastLogins) {
         this.ID = pID;
         this.login = pLogin;
         this.email = pEmail;
@@ -40,14 +44,6 @@ public class User implements Comparable <User> {
         this.status = pStatus;
         this.privilege = pPrivilege; 
     }
-
-    public User() {
-    }
-
-    public User(int i, String fBe9, String nereaoceja2003gmailcom, String nerea_Oceja, String abcd1234, Object object, int i0, int i1) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     // Getters.
     public int getID() {
         return ID;
@@ -73,49 +69,44 @@ public class User implements Comparable <User> {
     public UserPrivilege getPrivilege() {
         return privilege;
     }
-    public Collection getLastLogin() {
-        return lastLogin;
+    public List <Timestamp> getLastLogins() {
+        return lastLogins;
     }
 
     // Setters
     public void setID(int iD) {
         ID = iD;
     }
-
     public void setLogin(String pLogin) {
         login = pLogin;
     }
-
     public void setEmail(String pEmail) {
         email = pEmail;
     }
-
     public void setFullName(String pFullName) {
         fullName = pFullName;
     }
-
     public void setPassword(String pPassword) {
         password = pPassword;
     }
-
     public void setLastPasswordChange(Timestamp pLastPasswordChange) {
         lastPasswordChange = pLastPasswordChange;
     }
-
     public void setStatus(UserStatus pStatus) {
         status = pStatus;
     }
-
     public void setPrivilege(UserPrivilege pPrivilege) {
         privilege = pPrivilege;
     }
-
-    public void setLastLogin(Collection pLastLogin) {
-        lastLogin = pLastLogin;
+    public void setLastLogins(List <Timestamp> pLastLogins) {
+        lastLogins = pLastLogins;
     }
     private String lastLoginString() {
-        // TODO: generate string.
-        return null;
+        String ls = "";
+        lastLogins
+            .stream()
+            .forEach(t -> ls.concat("\n" + t.toString()));
+        return ls;
     }
 
     @Override
