@@ -52,7 +52,7 @@ public class SignInFXMLDocumentController implements Initializable {
      */
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
-        User us1 = new User();
+        User us1 = new User("", "");
         User us = UserManagerFactory.getAccess().signIn(us1);
         
         if (us.getLogin().equalsIgnoreCase(tfLogin.getText()) && us.getPassword().equalsIgnoreCase(cpPassword.getText())) {
