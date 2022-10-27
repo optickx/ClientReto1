@@ -1,6 +1,5 @@
 package view.signUp;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -14,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 public class SignUpFXMLDocumentController implements Initializable {
 
@@ -44,6 +44,9 @@ public class SignUpFXMLDocumentController implements Initializable {
     private Label lblPassword;
     @FXML
     private Label lblConfirmPassword;
+
+    @FXML
+    private ImageView imageView;
 
     /**
      * Handle Action event on Accept button

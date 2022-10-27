@@ -43,6 +43,7 @@ public class User implements Comparable <User> {
         this.lastPasswordChange = pLastPasswordChange;
         this.status = pStatus;
         this.privilege = pPrivilege; 
+        this.lastLogins = pLastLogins;
     }
     // Getters.
     public int getID() {
