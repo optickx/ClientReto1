@@ -107,6 +107,31 @@ public class SignInFXMLDocumentController {
         }
     }
 
+    /*COMENTARIO JAVI 
+        En primer lugar, hay que validar  la  longitud de
+        la información contenida en los campos 
+        y su formato, es decir, ¿se admite cualquier
+        combinación de caracteres (incluidos espacios) para los campos Login y password?*/
+    
+    /*  Validar que existe un usuario con el
+        mismo nombre de usuario introducido y
+        que su contraseña coincide con el valor
+        de la contraseña introducida. Se usa la
+        factoría para obtener una interfaz
+        IUserManager, y se llama al método
+        signIn() pasándole un nuevo objeto
+        User que contenga el valor login y el
+        valor password.
+        ■ Si coinciden, se cierra
+        esta ventana y se abre la
+        ventana Logged
+        pasándole los datos del
+        objeto User devuelto.
+        ■ Si se produce un error,
+        se abre una ventana
+        emergente mostrando el
+        mensaje del error.
+        */
     /**
      * Handle Action event on Accept button
      *
@@ -153,7 +178,9 @@ public class SignInFXMLDocumentController {
         }
 
     }
-
+    
+    /*Se abre la ventana Sign Up de manera
+    modal*/
     @FXML
     private void handleRegisterButtonAction(ActionEvent event) {
 
