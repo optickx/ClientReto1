@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import view.logged.LoggedFXMLDocumentController;
+import view.signIn.SignInFXMLDocumentController;
 
 public class App extends Application {
 
@@ -14,16 +16,17 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
-        Parent root = FXMLLoader.load(getClass().getResource("../view/SignIn/SignIn.fxml"));
-
-        //Crea una escena a partir del Parent
-        Scene scene = new Scene(root);
-        stage.setTitle("Sign In");
-        stage.setResizable(false);
-        //Establece la escena en el escenario stage y la muestra
-        stage.setScene(scene);
-        stage.show();
+       FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signIn/SignIn.fxml"));
+                Parent root = (Parent) loader.load();
+                //Crea una escena a partir del Parent 
+                //Scene scene = new Scene(root);
+                //stage = new Stage();
+                
+                //COnseguir el controlador de la ventana Logged
+                SignInFXMLDocumentController controller = (SignInFXMLDocumentController) loader.getController();
+                controller.setStage(stage);
+                controller.initSignIn(root);
+                
     }
 
 }

@@ -13,7 +13,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -30,9 +29,9 @@ import view.logged.LoggedFXMLDocumentController;
 
 /**
  *
- * @author 2dam
+ * @author Nerea
  */
-public class SignInFXMLDocumentController implements Initializable {
+public class SignInFXMLDocumentController {
 
     @FXML
     private TextField tfLogin;
@@ -48,7 +47,65 @@ public class SignInFXMLDocumentController implements Initializable {
     private ImageView imageViewUser;
     @FXML
     private ImageView imageViewPassword;
+
     private Stage stage;
+
+    /**
+     * Metodo de inicialización de la ventana no modal SignIn
+     *
+     * @param root
+     */
+    public void initSignIn(Parent root) {
+        Scene scene = new Scene(root);
+        //Se desabilita el botton Accept
+        btnAccept.setDisable(true);
+        //Se enfoc el campo login
+        tfLogin.requestFocus();
+        //Ventana no redimensionable
+        stage.setResizable(false);
+        //Nombre de la ventana
+        stage.setTitle("Logged");
+        //Establece la escena en el escenario stage y la muestra
+        stage.setScene(scene);
+        stage.show();
+
+        //Los campos de login y password estan apuntando al metodo textChanged
+        tfLogin.textProperty().addListener(this::textChanged);
+        cpPassword.textProperty().addListener(this::textChanged);
+    }
+
+    /**
+     * Metodo de cambio de texto que determina que el maximo de caracteres
+     * posibles sera 25 y habilitara el boton btnAccept si no hay texto alguno
+     * en los campos
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
+    private void textChanged(ObservableValue observable,
+            String oldValue,
+            String newValue) {
+        /*Mira si el numero de caracteres es superior a 25
+        en los campos de tflogin o de cppassword y si es asi
+        desactiva el boton btnAccept y sale una alerta con un mensaje
+         */
+        if (tfLogin.getText().trim().length() > 25
+                || cpPassword.getText().trim().length() > 25) {
+            new Alert(Alert.AlertType.ERROR, "La longitud máxima del campo es de 25 caracteres.", ButtonType.OK).showAndWait();
+            btnAccept.setDisable(true);
+        }/*Validar que los campos Login y
+        Password están informados.
+        En el caso de que no lo estén
+        deshabilitar el botón Accept.*/ else if (tfLogin.getText().trim().isEmpty()
+                || cpPassword.getText().trim().isEmpty()) {
+            btnAccept.setDisable(true);
+        }/*En el caso de que estén
+        informados, habilitar el botón
+        Accept*/ else {
+            btnAccept.setDisable(false);
+        }
+    }
 
     /**
      * Handle Action event on Accept button
@@ -57,7 +114,7 @@ public class SignInFXMLDocumentController implements Initializable {
      */
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
-        User us1 = new User("", "");
+        User us1 = new User();
         User us = UserManagerFactory.getAccess().signIn(us1);
 
         if (us.getLogin().equalsIgnoreCase(tfLogin.getText()) && us.getPassword().equalsIgnoreCase(cpPassword.getText())) {
@@ -119,37 +176,7 @@ public class SignInFXMLDocumentController implements Initializable {
         }
     }
 
-    public void initSignIn(URL url, ResourceBundle rb) {
-        //Se desabilita el botton Accept
-        btnAccept.setDisable(true);
-        //Se enfoc el campo login
-        tfLogin.textProperty().addListener(this::textChanged);
-        cpPassword.textProperty().addListener(this::textChanged);
-    }
-
-//Cambio de texto para volver a habiitar el botton accept
-    private void textChanged(ObservableValue observable,
-            String oldValue,
-            String newValue) {
-        //If text fields values are too long, show error message and disable 
-        //accept button
-        if (tfLogin.getText().trim().length() > 25
-                || cpPassword.getText().trim().length() > 25) {
-            //showErrorAlert("La longitud máxima del campo es de 25 caracteres.");
-            btnAccept.setDisable(true);
-        } //If text fields are empty disable accept buttton
-        else if (tfLogin.getText().trim().isEmpty()
-                || cpPassword.getText().trim().isEmpty()) {
-            btnAccept.setDisable(true);
-        } //Else, enable accept button
-        else {
-            btnAccept.setDisable(false);
-        }
-
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        initSignIn(location, resources);
+    public void setStage(Stage stage) {
+        stage = this.stage;
     }
 }
