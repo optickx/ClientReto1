@@ -16,6 +16,7 @@ public class ConnectionErrorException extends Exception {
      * detail message.
      */
     public ConnectionErrorException() {
+        super("Not able to connect with the server\nTry again later");
     }
 
     /**

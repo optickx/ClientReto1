@@ -16,6 +16,7 @@ public class LoginExistsException extends Exception {
      * detail message.
      */
     public LoginExistsException() {
+        super("The Login introduced already exists\nTry another Login");
     }
 
     /**

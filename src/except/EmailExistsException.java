@@ -16,6 +16,7 @@ public class EmailExistsException extends Exception {
      * detail message.
      */
     public EmailExistsException() {
+        super("The Login introduced already exists\nTry another Login");
     }
 
     /**
