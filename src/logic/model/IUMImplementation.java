@@ -13,7 +13,7 @@ import static logic.objects.message.types.RequestType.SIGNIN;
 import static logic.objects.message.types.RequestType.SIGNUP;
 
 public class IUMImplementation implements IUserManager {
-    
+
     @Override
     public User signIn(User user) {
         try {
@@ -21,7 +21,7 @@ public class IUMImplementation implements IUserManager {
             Request request = new Request(user, SIGNIN);
             ObjectOutputStream mandarMensaje;
             ObjectInputStream leerMensaje;
-            
+
             mandarMensaje = new ObjectOutputStream(socket.getOutputStream());
             mandarMensaje.writeObject(request);
         } catch (IOException ex) {
@@ -29,7 +29,7 @@ public class IUMImplementation implements IUserManager {
         }
         return user;
     }
-    
+
     @Override
     public User signUp(User user) {
         try {
@@ -39,7 +39,7 @@ public class IUMImplementation implements IUserManager {
             request.setRequestType(SIGNUP);
             ObjectOutputStream mandarMensaje;
             ObjectInputStream leerMensaje;
-            
+
             mandarMensaje = new ObjectOutputStream(socket.getOutputStream());
             mandarMensaje.writeObject(request);
         } catch (IOException ex) {
