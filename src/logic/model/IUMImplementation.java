@@ -9,7 +9,18 @@ import logic.objects.UserStatus;
 public class IUMImplementation implements IUserManager {
 
     @Override
-    public User signIn(User pUser) {
+    public User signIn(User pUser){
+      User  userDao = new User();//Metodo del dao que te devolvera algo
+      
+      userDao.getID();
+      userDao.getLogin();
+      userDao.getEmail();
+      userDao.getFullName();
+      userDao.getPassword();
+      userDao.getStatus();
+      userDao.getPrivilege();
+      userDao.getLastPasswordChange();
+      //return userDao
         return 
             new User(0, "FBe9", "nereaoceja2003@gmail.com", "Nerea Oceja",
             "abcd*1234", null, UserStatus.ENABLED, UserPrivilege.ADMIN, null);

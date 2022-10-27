@@ -45,6 +45,10 @@ public class User implements Comparable <User> {
         this.privilege = pPrivilege; 
         this.lastLogins = pLastLogins;
     }
+
+    public User() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     // Getters.
     public int getID() {
         return ID;

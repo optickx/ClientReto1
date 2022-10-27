@@ -2,7 +2,7 @@ package except;
 
 /**thrown when the username is not valid.
  */
-public class UsernameErrorException extends Exception {
+public class LoginErrorException extends Exception {
    /**stores the username so that it
     * can be shown to the user.
      */ 
@@ -17,7 +17,7 @@ public class UsernameErrorException extends Exception {
      * requires an indication of the reason behind it 
      * and the email that failed.
      */
-    public UsernameErrorException(TYPE pReason, String pUsername) {
+    public LoginErrorException(TYPE pReason, String pUsername) {
         super();
         reason = pReason;
         username = pUsername;
