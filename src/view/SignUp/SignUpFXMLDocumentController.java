@@ -14,6 +14,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import logic.UserManagerFactory;
+import logic.objects.User;
+import logic.objects.UserPrivilege;
+import logic.objects.UserStatus;
 
 public class SignUpFXMLDocumentController implements Initializable {
 
@@ -89,6 +93,8 @@ public class SignUpFXMLDocumentController implements Initializable {
 
                     //Carga los datos en un objeto User (PID se genera automaticamente, necesitamos saber la cantidad de usuarios en la base de datos
                     //a continuación manda el objeto al método (sign up) de la implementación.
+                    User user = new User(0, tfLogin.getText(), tfEmail.getText(),tfFullName.getText(), cpPassword.getText(), 0, 1, 2, null);
+                    UserManagerFactory.getAccess().signUp(user);
                 }
 
             }
