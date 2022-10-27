@@ -112,7 +112,7 @@ public class SignInFXMLDocumentController implements Initializable {
             stage.setResizable(false);
             //Establece la escena en el escenario stage y la muestra
             stage.setScene(scene);
-            stage.showAndWait();
+            stage.show();
 
         } catch (IOException ex) {
             Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);

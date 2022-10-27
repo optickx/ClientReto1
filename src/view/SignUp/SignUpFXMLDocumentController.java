@@ -1,5 +1,8 @@
 package view.signUp;
 
+import except.EmailErrorException;
+import except.EmailExistsException;
+import except.UnmatchedPasswordsException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -59,46 +62,42 @@ public class SignUpFXMLDocumentController implements Initializable {
      */
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
+        try {
+            //Oculta todos los labels con los mensajes de las
+            //  excepciones.
+            lblEmail.setText("");
+            lblConfirmPassword.setText("");
 
-        //Validar que todos los campos llenos
-        if (this.tfEmail.getText().isEmpty() || this.tfLogin.getText().isEmpty() || this.tfFullName.getText().isEmpty() || this.cpPassword.getText().isEmpty() || this.cpConfirm.getText().isEmpty()) {
-            //alerta de que necesitan estar llenos
-            new Alert(Alert.AlertType.ERROR, "1 or more empty fields", ButtonType.OK).showAndWait();
-        } else {
-            //Validar que el Username no exista
-            if (false) {
-                //Aviso de que el usuario ya existe
-                lblLogin.setText("The Username is already in use");
-            } else {
-                //Validar que el formato del email es correcto
-                boolean correcto = false;
-                // Patrón para validar el email
-                String pattern = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus)";
-                if (Pattern.matches(pattern, tfEmail.getText())) {
-                    correcto = true;
-                }
-
-                //Validar que la confirm password coincida
-                if (!(cpPassword.getText().equals(cpConfirm.getText()))) {
-                    //Aviso de contraseñas no coincidentes
-                    lblConfirmPassword.setText("Passwords do not match");
-                } else {
-                    lblConfirmPassword.setText("");
-                }
-                if (!correcto) {
-                    //Aviso de formato de Email erroneo
-                    lblEmail.setText("Invalid Email format \ntry for example with @tartanga.eus/gmail.com or hotmail.com");
-                } else {
-                    lblEmail.setText("");
-
-                    //Carga los datos en un objeto User (PID se genera automaticamente, necesitamos saber la cantidad de usuarios en la base de datos
-                    //a continuación manda el objeto al método (sign up) de la implementación.
-                    User user = new User(0, tfLogin.getText(), tfEmail.getText(),tfFullName.getText(), cpPassword.getText(), 0, 1, 2, null);
-                    UserManagerFactory.getAccess().signUp(user);
-                }
-
+            //Validar que el formato del email es correcto
+            // Patrón para validar el email
+            String pattern = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus)";
+            if (!Pattern.matches(pattern, tfEmail.getText())) {
+                throw new EmailErrorException();
             }
-        }
+
+            //Validar que la confirm password coincida
+            if (!(cpPassword.getText().equals(cpConfirm.getText()))) {
+                throw new UnmatchedPasswordsException();
+            }
+
+            //Carga los datos en un objeto User (PID se genera automaticamente, necesitamos saber la cantidad de usuarios en la base de datos
+            //a continuación manda el objeto al método (sign up) de la implementación.
+            String hola = "Hola";
+            User user = new User();
+            user.setLogin(tfLogin.getText());
+            user.setEmail(tfEmail.getText());
+            user.setPassword(cpPassword.getText());
+            user.setFullName(tfFullName.getText());
+            //0, hola, tfEmail.getText(), tfFullName.getText(), cpPassword.getText(), 0, 1, 2, null);
+            UserManagerFactory.getAccess().signUp(user);
+
+        } catch (EmailErrorException e) {
+            lblEmail.setText(e.getMessage());
+        } catch (UnmatchedPasswordsException e) {
+            lblConfirmPassword.setText(e.getMessage());
+        }/*catch (EmailExistsException e) {
+            lblEmail.setText(e.getMessage());
+        }*/
     }
 
     /**
@@ -107,7 +106,8 @@ public class SignUpFXMLDocumentController implements Initializable {
      * @param event The action event object
      */
     @FXML
-    private void handleResetButtonAction(ActionEvent event) {
+    private void handleResetButtonAction(ActionEvent event
+    ) {
         //Vacía todos los campos 
         tfEmail.setText("");
         tfFullName.setText("");

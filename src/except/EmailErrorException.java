@@ -1,44 +1,31 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package except;
 
-/**thrown when the email input by the user doesn't match
- * the required pattern.
+/**
+ *
+ * @author 2dam
  */
 public class EmailErrorException extends Exception {
-    /**stores the email so that it 
-     * can be shown back to the user.
-     */
-    private String email;
-    /**enum that stores the type
-     * 
-     */
-    private TYPE reason;
 
-    /**to build an exception of this type
-     * requires an indication of the reason behind it
-     * and the email that failed.
+    /**
+     * Creates a new instance of <code>EmailErrorException</code> without detail
+     * message.
      */
-    public EmailErrorException(TYPE pReason, String pEmail) {
-        super();
-        reason = pReason;
-        email = pEmail;        
+    public EmailErrorException() {
+        super("Error in the email format, must be a valid email address");
     }
-    /**useful to return the email
-     * @return email that gave the error
-    */
-    public String getEmail() {
-        return email;
-    }
-    /**@return the reason behind
-     * the exception.
+
+    /**
+     * Constructs an instance of <code>EmailErrorException</code> with the
+     * specified detail message.
+     *
+     * @param msg the detail message.
      */
-    public TYPE getReason() {
-        return reason;
-    }
-    /**two possible reasons for an
-     * invalid email: pattern or availability.
-     */
-    public enum TYPE {
-        INVALID_PATTERN,
-        ALREADY_IN_USE
+    public EmailErrorException(String msg) {
+        super(msg);
     }
 }
