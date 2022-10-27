@@ -11,7 +11,7 @@ public class SignIn {
     }
 
     // Setters.
-    public void setLastSignIn(Timestamp pLastSignIn) {
-        lastSignIn = pLastSignIn;
+    public void setLastSignIn(Timestamp LastSignIn) {
+        lastSignIn = LastSignIn;
     }
 }

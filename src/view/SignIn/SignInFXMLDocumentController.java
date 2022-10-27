@@ -57,7 +57,7 @@ public class SignInFXMLDocumentController implements Initializable {
      */
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
-        User us1 = new User("", "");
+        User us1 = new User();
         User us = UserManagerFactory.getAccess().signIn(us1);
 
         if (us.getLogin().equalsIgnoreCase(tfLogin.getText()) && us.getPassword().equalsIgnoreCase(cpPassword.getText())) {
@@ -112,7 +112,7 @@ public class SignInFXMLDocumentController implements Initializable {
             stage.setResizable(false);
             //Establece la escena en el escenario stage y la muestra
             stage.setScene(scene);
-            stage.showAndWait();
+            stage.show();
 
         } catch (IOException ex) {
             Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);

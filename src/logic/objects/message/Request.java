@@ -6,6 +6,7 @@ import logic.objects.User;
 import logic.objects.message.types.RequestType;
 
 public class Request implements Serializable {
+
     private User user;
     private RequestType requestType;
 
@@ -13,18 +14,25 @@ public class Request implements Serializable {
         this.user = pUser;
         this.requestType = pRequestType;
     }
-    
+
+    public Request() {
+
+    }
+
     // Getters.
     public User getUser() {
         return user;
     }
+
     public RequestType getRequestType() {
         return requestType;
     }
+
     // Setters.
     public void setUser(User user) {
         this.user = user;
     }
+
     public void setRequestType(RequestType requestType) {
         this.requestType = requestType;
     }
