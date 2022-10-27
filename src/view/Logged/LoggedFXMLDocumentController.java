@@ -5,25 +5,18 @@
 package view.logged;
 
 import java.io.IOException;
-import java.net.URL;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import logic.UserManagerFactory;
 import logic.objects.*;
-import static logic.objects.UserStatus.ENABLED;
-import view.*;
 
 /**
  *
@@ -35,6 +28,8 @@ public class LoggedFXMLDocumentController {
     private Label lblWelcome;
     @FXML
     private Button btnLogOut;
+    @FXML
+    private ImageView imageViewLogged;
 
     private User user;
 
