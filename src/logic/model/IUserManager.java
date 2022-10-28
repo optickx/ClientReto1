@@ -2,11 +2,8 @@ package logic.model;
 
 import except.ConnectionErrorException;
 import except.EmailErrorException;
-import except.EmailExistsException;
-import except.LoginExistsException;
-import except.LoginFormatException;
 import except.ServerException;
-import except.UnmatchedPasswordsException;
+import except.UserExistsException;
 import logic.objects.User;
 
 public interface IUserManager {
@@ -17,11 +14,7 @@ public interface IUserManager {
     public User signIn(User pUser);
 
     public User signUp(User pUser) throws ConnectionErrorException,
-            EmailErrorException,
-            EmailExistsException,
-            LoginExistsException,
-            LoginFormatException,
+            UserExistsException,
             ServerException,
-            UnmatchedPasswordsException,
             Exception;
 }

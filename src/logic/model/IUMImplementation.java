@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import logic.objects.User;
 import logic.objects.message.Request;
+import logic.objects.message.Response;
 import static logic.objects.message.types.RequestType.SIGNIN;
 import static logic.objects.message.types.RequestType.SIGNUP;
 
@@ -42,7 +43,14 @@ public class IUMImplementation implements IUserManager {
 
             mandarMensaje = new ObjectOutputStream(socket.getOutputStream());
             mandarMensaje.writeObject(request);
-        } catch (IOException ex) {
+
+            leerMensaje = new ObjectInputStream(socket.getInputStream());
+            Response response = (Response) leerMensaje.readObject();
+
+            //Cerrar flujos
+            leerMensaje.close();
+            mandarMensaje.close();
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(IUMImplementation.class.getName()).log(Level.SEVERE, null, ex);
         }
         return user;

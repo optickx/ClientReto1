@@ -33,5 +33,6 @@
         <Label fx:id="lblFullName" layoutX="365.0" layoutY="287.0" prefHeight="17.0" prefWidth="405.0" />
         <Label fx:id="lblPassword" layoutX="365.0" layoutY="356.0" prefHeight="17.0" prefWidth="405.0" />
         <Label fx:id="lblConfirmPassword" layoutX="417.0" layoutY="423.0" prefHeight="17.0" prefWidth="344.0" />
+      <Label layoutX="168.0" layoutY="487.0" prefHeight="43.0" prefWidth="226.0" text="*Todos los campos son obligatorios" />
     </children>
 </Pane>

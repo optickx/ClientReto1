@@ -1,36 +1,27 @@
 package view.signUp;
 
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import except.EmailErrorException;
 import except.EmailExistsException;
 import except.LoginExistsException;
 import except.LoginFormatException;
 import except.ServerException;
 import except.UnmatchedPasswordsException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import logic.UserManagerFactory;
 import logic.objects.User;
-import logic.objects.UserPrivilege;
-import logic.objects.UserStatus;
-import view.logged.LoggedFXMLDocumentController;
 
 public class SignUpFXMLDocumentController implements Initializable {
 
@@ -90,13 +81,13 @@ public class SignUpFXMLDocumentController implements Initializable {
                 throw new UnmatchedPasswordsException();
             }
 
-            //Carga los datos en un objeto User (PID se genera automaticamente, necesitamos saber la cantidad de usuarios en la base de datos
-            //a continuación manda el objeto al método (sign up) de la implementación.
+            //Carga los datos en un objeto User
             User user = new User();
             user.setLogin(tfLogin.getText());
             user.setEmail(tfEmail.getText());
             user.setPassword(cpPassword.getText());
             user.setFullName(tfFullName.getText());
+            //a continuación manda el objeto al método (sign up) de la implementación.
             UserManagerFactory.getAccess().signUp(user);
             //Si el registro ha sido correcto
             //la ventana Sign Up se cierra, devolviendo el control a la
@@ -109,20 +100,16 @@ public class SignUpFXMLDocumentController implements Initializable {
 
             //A través de una ventana emergente se mostrará el mensaje
             //de la excepción si la hubiera.
-        } catch (EmailErrorException e) {
+        } catch (EmailErrorException | EmailExistsException e) {
             lblEmail.setText(e.getMessage());
         } catch (UnmatchedPasswordsException e) {
             lblConfirmPassword.setText(e.getMessage());
-        } catch (EmailExistsException e) {
-            lblEmail.setText(e.getMessage());
-        } catch (LoginExistsException e) {
+        } catch (LoginExistsException | LoginFormatException e) {
             lblLogin.setText(e.getMessage());
-        } catch (LoginFormatException e) {
-            lblLogin.setText(e.getMessage());
-        } catch (ServerException ex) {
-            Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ServerException e) {
+            LOGGER.info(e.getMessage());
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
         }
     }
 
