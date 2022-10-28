@@ -1,11 +1,12 @@
 package app;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import view.logged.LoggedFXMLDocumentController;
 import view.signIn.SignInFXMLDocumentController;
 
 public class App extends Application {
@@ -15,18 +16,17 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-       FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signIn/SignIn.fxml"));
-                Parent root = (Parent) loader.load();
-                //Crea una escena a partir del Parent 
-                //Scene scene = new Scene(root);
-                //stage = new Stage();
-                
-                //COnseguir el controlador de la ventana Logged
-                SignInFXMLDocumentController controller = (SignInFXMLDocumentController) loader.getController();
-                controller.setStage(stage);
-                controller.initSignIn(root);
-                
+    public void start(Stage stage){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signIn/SignIn.fxml"));
+            Parent root = (Parent) loader.load();
+            //Conseguir el controldor de la ventana SignIn
+            SignInFXMLDocumentController controller = (SignInFXMLDocumentController) loader.getController();
+            controller.setStage(stage);
+            controller.initSignIn(root);
+        } catch (IOException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

@@ -4,9 +4,8 @@
  */
 package view.signIn;
 
+import except.LoginPasswordNotFoundException;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
@@ -21,15 +20,16 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import logic.UserManagerFactory;
 import logic.objects.User;
 import view.logged.LoggedFXMLDocumentController;
+import view.signUp.SignUpFXMLDocumentController;
 
 /**
  *
- * @author Nerea
+ * @author Nerea and Dani
  */
 public class SignInFXMLDocumentController {
 
@@ -49,29 +49,38 @@ public class SignInFXMLDocumentController {
     private ImageView imageViewPassword;
 
     private Stage stage;
+    private static final Logger LOGGER = Logger.getLogger("package view.signIn");
 
     /**
      * Metodo de inicialización de la ventana no modal SignIn
      *
-     * @param root
+     * @param root Un objeto parent con el DOM cargado
      */
     public void initSignIn(Parent root) {
+        LOGGER.info("Inicializando la ventana SignIn");
+        //Se crea una escena a partir del parent
         Scene scene = new Scene(root);
-        //Se desabilita el botton Accept
-        btnAccept.setDisable(true);
-        //Se enfoc el campo login
-        tfLogin.requestFocus();
+        //Establece la escena en el escenario
+        stage.setScene(scene);
+        //Nombre de la ventana
+        stage.setTitle("SignIn");
         //Ventana no redimensionable
         stage.setResizable(false);
-        //Nombre de la ventana
-        stage.setTitle("Logged");
-        //Establece la escena en el escenario stage y la muestra
-        stage.setScene(scene);
-        stage.show();
-
+        //Poner los manejadores de eventos
+        stage.setOnShowing(this::handlerWindowShowing);
         //Los campos de login y password estan apuntando al metodo textChanged
         tfLogin.textProperty().addListener(this::textChanged);
         cpPassword.textProperty().addListener(this::textChanged);
+        //Muestra la ventana
+        stage.show();
+    }
+
+    private void handlerWindowShowing(WindowEvent event) {
+        LOGGER.info("Iniciando SignInFXMLDocumentController::handlerWindowShowing");
+        //Se desabilita el botton Accept
+        btnAccept.setDisable(true);
+        //Se enfoca el campo login
+        tfLogin.requestFocus();
     }
 
     /**
@@ -79,9 +88,9 @@ public class SignInFXMLDocumentController {
      * posibles sera 25 y habilitara el boton btnAccept si no hay texto alguno
      * en los campos
      *
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * @param observable El valor que esta siendo ovservado
+     * @param oldValue La version vieja del observable
+     * @param newValue La version nueva del observable
      */
     private void textChanged(ObservableValue observable,
             String oldValue,
@@ -107,21 +116,7 @@ public class SignInFXMLDocumentController {
         }
     }
 
-    /*COMENTARIO JAVI 
-        En primer lugar, hay que validar  la  longitud de
-        la información contenida en los campos 
-        y su formato, es decir, ¿se admite cualquier
-        combinación de caracteres (incluidos espacios) para los campos Login y password?*/
-    
-    /*  Validar que existe un usuario con el
-        mismo nombre de usuario introducido y
-        que su contraseña coincide con el valor
-        de la contraseña introducida. Se usa la
-        factoría para obtener una interfaz
-        IUserManager, y se llama al método
-        signIn() pasándole un nuevo objeto
-        User que contenga el valor login y el
-        valor password.
+    /*
         ■ Si coinciden, se cierra
         esta ventana y se abre la
         ventana Logged
@@ -131,7 +126,7 @@ public class SignInFXMLDocumentController {
         se abre una ventana
         emergente mostrando el
         mensaje del error.
-        */
+     */
     /**
      * Handle Action event on Accept button
      *
@@ -139,71 +134,69 @@ public class SignInFXMLDocumentController {
      */
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
-        User us1 = new User();
-        User us = UserManagerFactory.getAccess().signIn(us1);
+        try {
+            //Objeto User con los valores de login y password
+            User usSignIn = new User();
+            usSignIn.setLogin(tfLogin.getText());
+            usSignIn.setPassword(cpPassword.getText());
+            /*Se usa la factoría para obtener una interfaz IUserManager, 
+            y se llama al método signIn() pasándole un nuevo objeto
+            User que contenga el valor login y el valor password.*/
+            User us = UserManagerFactory.getAccess().signIn(usSignIn);
+            /*Validar que existe un usuario con el
+            mismo nombre de usuario introducido y
+            que su contraseña coincide con el valor
+            de la contraseña introducida.*/
+            if (!us.getLogin().equalsIgnoreCase(usSignIn.getLogin()) || !us.getPassword().equalsIgnoreCase(usSignIn.getPassword())) {
+                /*Si se produce un error,se abre una ventana emergente
+                mostrando el mensaje del error.*/
+                throw new LoginPasswordNotFoundException();
+            } else {
+                /*Localizar donde esta el boton btnAccept
+                para localizar la ventana login para poder cerrarla*/
+                Stage stageSignIn = (Stage) btnAccept.getScene().getWindow();
+                //Cerrar la ventana login
+                stageSignIn.close();
 
-        if (us.getLogin().equalsIgnoreCase(tfLogin.getText()) && us.getPassword().equalsIgnoreCase(cpPassword.getText())) {
-            //Abrir ventana de login
-            try { //Cargar fxml file
+                Stage stageLogged = new Stage();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/logged/Logged.fxml"));
                 Parent root = (Parent) loader.load();
-                //Crea una escena a partir del Parent 
-                Scene scene = new Scene(root);
-                stage = new Stage();
                 //COnseguir el controlador de la ventana Logged
                 LoggedFXMLDocumentController controller = (LoggedFXMLDocumentController) loader.getController();
-
-                controller.setStage(stage);
-                controller.initLogged(us);
-                //Localizar la ventana login
-                Stage stageN = (Stage) btnAccept.getScene().getWindow();
-                //Cerrar la ventana login
-                stageN.close();
-                //Ventana no redimensionable
-                stage.setResizable(false);
-                //Nombre de la ventana
-                stage.setTitle("Logged");
-                //Establece la escena en el escenario stage y la muestra
-                stage.setScene(scene);
-                stage.show();
-
-            } catch (IOException ex) {
-                Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-
-                //Validar contraseña y usuario y mandar alerta en caso de error
-                //si todo ok ir a la ventana de welcome
+                controller.setStage(stageLogged);
+                controller.initLogged(root, us);
             }
-        } else {
-            new Alert(Alert.AlertType.ERROR, "Login or password not found", ButtonType.OK).showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LoginPasswordNotFoundException ex) {
+            new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
         }
-
     }
-    
-    /*Se abre la ventana Sign Up de manera
-    modal*/
+
+    /**
+     * El evento es que cuando se toca el boton btnSignUp Abre la ventana SignUp
+     * de manera modal
+     *
+     * @param event
+     */
     @FXML
-    private void handleRegisterButtonAction(ActionEvent event) {
-
-        try {//Validar que todos los campos llenos
-            //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
-            Parent root = FXMLLoader.load(getClass().getResource("../signUp/SignUp.fxml"));
-            //Crea una escena a partir del Parent
-            Scene scene = new Scene(root);
-
-            stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Sign Up");
-            stage.setResizable(false);
-            //Establece la escena en el escenario stage y la muestra
-            stage.setScene(scene);
-            stage.show();
-
+    private void handleSignInButtonAction(ActionEvent event) {
+        try {
+            /*Para poder abrir modalmente la ventana
+            he declaro otro stage diferenete*/
+            Stage stageSignUp = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signUp/SignUp.fxml"));
+            Parent root = (Parent) loader.load();
+            //COnseguir el controlador de la ventana SignIn
+            SignUpFXMLDocumentController controller = (SignUpFXMLDocumentController) loader.getController();
+            controller.setStage(stageSignUp);
+            controller.initSignUp(root);
         } catch (IOException ex) {
             Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void setStage(Stage stage) {
-        stage = this.stage;
+        this.stage = stage;
     }
 }

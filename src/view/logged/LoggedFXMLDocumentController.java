@@ -4,6 +4,7 @@
  */
 package view.logged;
 
+import app.App;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,10 +18,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import logic.objects.*;
+import view.signIn.SignInFXMLDocumentController;
 
 /**
  *
- * @author 2dam
+ * @author Nerea and Dani
  */
 public class LoggedFXMLDocumentController {
 
@@ -31,44 +33,47 @@ public class LoggedFXMLDocumentController {
     @FXML
     private ImageView imageViewLogged;
 
-    private User user;
+    private Stage stage;
+    private static final Logger LOGGER = Logger.getLogger("package view.logged;");
 
-    //Label con nombre del usuario y welcome
-    public void initLogged(User user) {
-        this.user = user;
-        /* User us1=new User();
-        User us = UserManagerFactory.getAccess().signUp(us1);*/
+    /**
+     * Metodo de inicialización de la ventana
+     *
+     * @param root Un objeto parent con el DOM cargado
+     * @param user Un objeto user
+     */
+    public void initLogged(Parent root, User user) {
+        //Se crea una escena a partir del parent
+        Scene scene = new Scene(root);
+        //Establece la escena en el escenario
+        stage.setScene(scene);
+        //El nombre de la ventana es Logged
+        stage.setTitle("Logged");
+        //Ventana no redimensionable
+        stage.setResizable(false);
+        /*La ventana recibe un objeto Usuario
+        y muestra el valor del parámetro
+        Login*/
         lblWelcome.setText("Welcome " + user.getLogin() + " to our aplication");
+        stage.show();
     }
 
     @FXML
     private void handleLogOutButtonAction(ActionEvent event) {
-
-        try {//Validar que todos los campos llenos
-
-            //Carga el ('DOM'--> document object model) documento xml y btiene un objeto parent
-            Parent root = FXMLLoader.load(getClass().getResource("../signIn/SignIn.fxml"));
-            //Crea una escena a partir del Parent
-            Scene scene = new Scene(root);
-
-            Stage stage = new Stage();
-            //Localizar la ventana Logged
-            Stage stageN = (Stage) btnLogOut.getScene().getWindow();
-            //Cerrar la ventana Logged
-            stageN.close();
-            stage.setTitle("Sign In");
-            stage.setResizable(false);
-            //Establece la escena en el escenario stage y la muestra
-            stage.setScene(scene);
-            stage.show();
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signIn/SignIn.fxml"));
+            Parent root = (Parent) loader.load();
+            //Conseguir el controldor de la ventana Logged
+            SignInFXMLDocumentController controller = (SignInFXMLDocumentController) loader.getController();
+            controller.setStage(stage);
+            controller.initSignIn(root);
         } catch (IOException ex) {
-            Logger.getLogger(LoggedFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void setStage(Stage stage) {
-
+        this.stage = stage;
     }
 
 }
