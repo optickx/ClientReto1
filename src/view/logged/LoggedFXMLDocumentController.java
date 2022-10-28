@@ -33,7 +33,7 @@ public class LoggedFXMLDocumentController {
     @FXML
     private ImageView imageViewLogged;
 
-    private Stage stage;
+    private Stage stageLogged;
     private static final Logger LOGGER = Logger.getLogger("package view.logged;");
 
     /**
@@ -43,29 +43,34 @@ public class LoggedFXMLDocumentController {
      * @param user Un objeto user
      */
     public void initLogged(Parent root, User user) {
+        LOGGER.info("Inicializando la ventana SignIn");
         //Se crea una escena a partir del parent
         Scene scene = new Scene(root);
         //Establece la escena en el escenario
-        stage.setScene(scene);
+        stageLogged.setScene(scene);
         //El nombre de la ventana es Logged
-        stage.setTitle("Logged");
+        stageLogged.setTitle("Logged");
         //Ventana no redimensionable
-        stage.setResizable(false);
+        stageLogged.setResizable(false);
         /*La ventana recibe un objeto Usuario
-        y muestra el valor del parámetro
+        y muestra el valor del campo
         Login*/
         lblWelcome.setText("Welcome " + user.getLogin() + " to our aplication");
-        stage.show();
+        stageLogged.show();
     }
 
     @FXML
     private void handleLogOutButtonAction(ActionEvent event) {
         try {
+            //Cerrar la ventana con el metodo close()
+            this.stageLogged.close();
+            //Se inicia la ventana no modal SignIn
+            Stage stageSignIn = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signIn/SignIn.fxml"));
             Parent root = (Parent) loader.load();
             //Conseguir el controldor de la ventana Logged
             SignInFXMLDocumentController controller = (SignInFXMLDocumentController) loader.getController();
-            controller.setStage(stage);
+            controller.setStage(stageSignIn);
             controller.initSignIn(root);
         } catch (IOException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,7 +78,7 @@ public class LoggedFXMLDocumentController {
     }
 
     public void setStage(Stage stage) {
-        this.stage = stage;
+        this.stageLogged = stage;
     }
 
 }
