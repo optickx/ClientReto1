@@ -19,6 +19,10 @@ import javafx.stage.WindowEvent;
 import logic.UserManagerFactory;
 import logic.objects.User;
 
+/**
+ *
+ * @author 2dam
+ */
 public class SignUpFXMLDocumentController {
 
     /**

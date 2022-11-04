@@ -25,7 +25,7 @@ import javafx.stage.WindowEvent;
 import logic.UserManagerFactory;
 import logic.objects.User;
 import view.logged.LoggedFXMLDocumentController;
-import view.signUp.SignUpFXMLDocumentController;
+import view.signIn.SignInFXMLDocumentController;
 
 /**
  *

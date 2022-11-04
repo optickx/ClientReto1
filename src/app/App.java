@@ -7,7 +7,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import view.signIn.SignInFXMLDocumentController;
 
 public class App extends Application {
 
@@ -16,7 +15,7 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage stage){
+    public void start(Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signIn/SignIn.fxml"));
             Parent root = (Parent) loader.load();
