@@ -18,7 +18,7 @@ public class IUMImplementation implements IUserManager {
     @Override
     public User signIn(User user) {
         try {
-            Socket socket = new Socket("localhost", 7777);
+            Socket socket = new Socket("localhost", 4545);
             Request request = new Request(user, SIGNIN);
             ObjectOutputStream mandarMensaje;
             ObjectInputStream leerMensaje;
@@ -32,27 +32,33 @@ public class IUMImplementation implements IUserManager {
     }
 
     @Override
-    public User signUp(User user) {
+    public Response signUp(User user) {
+        Request request = null;
+        Response response = null;
+        ObjectInputStream read = null;
+        ObjectOutputStream write = null;
         try {
-            Socket socket = new Socket("localhost", 7777);
-            Request request = new Request();
+            Socket socket = new Socket("localhost", 9107);
+            write = new ObjectOutputStream(socket.getOutputStream());
+            read = new ObjectInputStream(socket.getInputStream());
+
+            // Cargar los datos en el objeto Request 
+            // y mandar la informacion al lado Servidor
+            request = new Request();
             request.setUser(user);
             request.setRequestType(SIGNUP);
-            ObjectOutputStream mandarMensaje;
-            ObjectInputStream leerMensaje;
+            write.writeObject(request);
 
-            mandarMensaje = new ObjectOutputStream(socket.getOutputStream());
-            mandarMensaje.writeObject(request);
-
-            leerMensaje = new ObjectInputStream(socket.getInputStream());
-            Response response = (Response) leerMensaje.readObject();
+            // Lee la Respuesta del lado Servidor
+            response = (Response) read.readObject();
 
             //Cerrar flujos
-            leerMensaje.close();
-            mandarMensaje.close();
+            socket.close();
+            read.close();
+            write.close();
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(IUMImplementation.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return user;
+        return response;
     }
 }

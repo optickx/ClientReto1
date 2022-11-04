@@ -7,23 +7,33 @@ import except.LoginExistsException;
 import except.LoginFormatException;
 import except.ServerException;
 import except.UnmatchedPasswordsException;
+import except.UserExistsException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import logic.UserManagerFactory;
 import logic.objects.User;
+import logic.objects.message.Response;
+import logic.objects.message.types.ResponseType;
 
-public class SignUpFXMLDocumentController implements Initializable {
+public class SignUpFXMLDocumentController {
 
     /**
      * @author Eneko and Roke
@@ -56,6 +66,9 @@ public class SignUpFXMLDocumentController implements Initializable {
     @FXML
     private ImageView imageView;
 
+    private Stage stage;
+    private static final Logger LOGGER = Logger.getLogger("package view.signUp;");
+
     /**
      * Handle Action event on Accept button
      *
@@ -64,6 +77,7 @@ public class SignUpFXMLDocumentController implements Initializable {
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
         try {
+            Response response = null;
             //Oculta todos los labels con los mensajes de las
             //  excepciones.
             lblEmail.setText("");
@@ -88,28 +102,39 @@ public class SignUpFXMLDocumentController implements Initializable {
             user.setPassword(cpPassword.getText());
             user.setFullName(tfFullName.getText());
             //a continuación manda el objeto al método (sign up) de la implementación.
-            UserManagerFactory.getAccess().signUp(user);
-            //Si el registro ha sido correcto
-            //la ventana Sign Up se cierra, devolviendo el control a la
-            //ventana Sign In.
+            response = UserManagerFactory.getAccess().signUp(user);
 
-            //Localizar la ventana Logged
-            Stage stageN = (Stage) btnAccept.getScene().getWindow();
-            //Cerrar la ventana Logged
-            stageN.close();
+            if (response.getResponseType() != ResponseType.OK) {
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText(response.getResponseType().name());
+                alert.setContentText("Try again");
+                alert.showAndWait();
+            } else {
+                //Avisa al usuario de que se ha registrado exitosamente
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("SignUp");
+                alert.setHeaderText(null);
+                alert.setContentText("Signed Up succesfully, try logging in");
+                alert.showAndWait();
+                //la ventana Sign Up se cierra, devolviendo el control a la
+                //ventana Sign In.
+                Stage stageN = (Stage) btnAccept.getScene().getWindow();
+                stageN.close();
+            }
 
             //A través de una ventana emergente se mostrará el mensaje
             //de la excepción si la hubiera.
-        } catch (EmailErrorException | EmailExistsException e) {
+        } catch (EmailErrorException e) {
             lblEmail.setText(e.getMessage());
         } catch (UnmatchedPasswordsException e) {
             lblConfirmPassword.setText(e.getMessage());
-        } catch (LoginExistsException | LoginFormatException e) {
+        } catch (LoginFormatException e) {
             lblLogin.setText(e.getMessage());
-        } catch (ServerException e) {
-            LOGGER.info(e.getMessage());
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+        } catch (ServerException ex) {
+            Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -134,18 +159,37 @@ public class SignUpFXMLDocumentController implements Initializable {
     }
     private static final Logger logger = Logger.getLogger("package basicloginjavafxapplication1");
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        initSignUp();
+    public void initSignUp(Parent root) {
+        LOGGER.info("Inicializando la ventana SignUp");
+        //Se crea una escena a partir del parent
+        Scene scene = new Scene(root);
+        //Establece la escena en el escenario stage y la muestra
+        stage.setScene(scene);
+        //El nombre de la ventana es SignUp
+        stage.setTitle("Sign Up");
+        //Ventana modal
+        stage.initModality(Modality.APPLICATION_MODAL);
+        //Ventana no redimensionable
+        stage.setResizable(false);
+        //Poner los manejadores de eventos
+        stage.setOnShowing(this::handlerWindowShowing);
+        //Poner a los textFields en escucha
+        tfEmail.textProperty().addListener(this::textPropertyChange);
+        tfLogin.textProperty().addListener(this::textPropertyChange);
+        tfFullName.textProperty().addListener(this::textPropertyChange);
+        cpPassword.textProperty().addListener(this::textPropertyChange);
+        cpConfirm.textProperty().addListener(this::textPropertyChange);
+        stage.showAndWait();
     }
 
-    public void initSignUp() {
-        //El foco se centra en el login
-        tfLogin.requestFocus();
-        //Deshabilita el botón accept
+    private void handlerWindowShowing(WindowEvent event) {
+        LOGGER.info("Iniciando SignUpFXMLDocumentController::handlerWindowShowing");
+        //Se desabilita el botton Accept
         btnAccept.setDisable(true);
-        //Oculta los labels 
-        //que muestran los mensajes de las excepciones
+        //Se enfoca el campo login
+        tfLogin.requestFocus();
+        /*Oculta los labels 
+        que muestran los mensajes de las excepciones*/
         tfEmail.setText("");
         tfFullName.setText("");
         cpPassword.setText("");
@@ -153,12 +197,6 @@ public class SignUpFXMLDocumentController implements Initializable {
         tfLogin.setText("");
         lblConfirmPassword.setText("");
         lblEmail.setText("");
-        //Poner a los textFields en escucha
-        tfEmail.textProperty().addListener(this::textPropertyChange);
-        tfLogin.textProperty().addListener(this::textPropertyChange);
-        tfFullName.textProperty().addListener(this::textPropertyChange);
-        cpPassword.textProperty().addListener(this::textPropertyChange);
-        cpConfirm.textProperty().addListener(this::textPropertyChange);
     }
 
     /**
@@ -191,5 +229,9 @@ public class SignUpFXMLDocumentController implements Initializable {
         else {
             btnAccept.setDisable(false);
         }
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }

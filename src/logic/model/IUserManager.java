@@ -5,6 +5,7 @@ import except.EmailErrorException;
 import except.ServerException;
 import except.UserExistsException;
 import logic.objects.User;
+import logic.objects.message.Response;
 
 public interface IUserManager {
 
@@ -13,8 +14,7 @@ public interface IUserManager {
      */
     public User signIn(User pUser);
 
-    public User signUp(User pUser) throws ConnectionErrorException,
-            UserExistsException,
+    public Response signUp(User pUser) throws ConnectionErrorException,
             ServerException,
             Exception;
 }
