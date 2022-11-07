@@ -26,6 +26,7 @@ import logic.UserManagerFactory;
 import logic.objects.User;
 import view.logged.LoggedFXMLDocumentController;
 import view.signIn.SignInFXMLDocumentController;
+import view.signUp.SignUpFXMLDocumentController;
 
 /**
  *

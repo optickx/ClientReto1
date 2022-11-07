@@ -18,7 +18,9 @@ public class IUMImplementation implements IUserManager {
     public User signIn(User user) {
         try {
             Socket socket = new Socket("localhost", 7777);
-            Request request = new Request(user, SIGNIN);
+            Request request = new Request();
+            request.setUser(user);
+            request.setRequestType(SIGNIN);
             ObjectOutputStream mandarMensaje;
             ObjectInputStream leerMensaje;
 
