@@ -1,7 +1,10 @@
 package view.signUp;
 
 import except.EmailErrorException;
+import except.LoginFormatException;
+import except.ServerException;
 import except.UnmatchedPasswordsException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
@@ -9,6 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -18,6 +23,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import logic.UserManagerFactory;
 import logic.objects.User;
+import logic.objects.message.Response;
+import logic.objects.message.types.ResponseType;
 
 /**
  *
@@ -66,6 +73,7 @@ public class SignUpFXMLDocumentController {
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
         try {
+            Response response = null;
             //Oculta todos los labels con los mensajes de las
             //  excepciones.
             lblEmail.setText("");
@@ -83,24 +91,47 @@ public class SignUpFXMLDocumentController {
                 throw new UnmatchedPasswordsException();
             }
 
-            //Carga los datos en un objeto User (PID se genera automaticamente, necesitamos saber la cantidad de usuarios en la base de datos
-            //a continuación manda el objeto al método (sign up) de la implementación.
-            String hola = "Hola";
+            //Carga los datos en un objeto User
             User user = new User();
             user.setLogin(tfLogin.getText());
             user.setEmail(tfEmail.getText());
             user.setPassword(cpPassword.getText());
             user.setFullName(tfFullName.getText());
-            //0, hola, tfEmail.getText(), tfFullName.getText(), cpPassword.getText(), 0, 1, 2, null);
-            UserManagerFactory.getAccess().signUp(user);
+            //a continuación manda el objeto al método (sign up) de la implementación.
+            response = UserManagerFactory.getAccess().signUp(user);
 
+            if (response.getResponseType() != ResponseType.OK) {
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText(response.getResponseType().name());
+                alert.setContentText("Try again");
+                alert.showAndWait();
+            } else {
+                //Avisa al usuario de que se ha registrado exitosamente
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("SignUp");
+                alert.setHeaderText(null);
+                alert.setContentText("Signed Up succesfully, try logging in");
+                alert.showAndWait();
+                //la ventana Sign Up se cierra, devolviendo el control a la
+                //ventana Sign In.
+                Stage stageN = (Stage) btnAccept.getScene().getWindow();
+                stageN.close();
+            }
+
+            //A través de una ventana emergente se mostrará el mensaje
+            //de la excepción si la hubiera.
         } catch (EmailErrorException e) {
             lblEmail.setText(e.getMessage());
         } catch (UnmatchedPasswordsException e) {
             lblConfirmPassword.setText(e.getMessage());
-        }/*catch (EmailExistsException e) {
-            lblEmail.setText(e.getMessage());
-        }*/
+        } catch (LoginFormatException e) {
+            lblLogin.setText(e.getMessage());
+        } catch (ServerException ex) {
+            Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -122,7 +153,7 @@ public class SignUpFXMLDocumentController {
         // enfoca el campo username.
         tfLogin.requestFocus();
     }
-    
+
     public void initSignUp(Parent root) {
         LOGGER.info("Inicializando la ventana SignUp");
         //Se crea una escena a partir del parent
@@ -145,7 +176,8 @@ public class SignUpFXMLDocumentController {
         cpConfirm.textProperty().addListener(this::textPropertyChange);
         stage.showAndWait();
     }
-    private void handlerWindowShowing(WindowEvent event){
+
+    private void handlerWindowShowing(WindowEvent event) {
         LOGGER.info("Iniciando SignUpFXMLDocumentController::handlerWindowShowing");
         //Se desabilita el botton Accept
         btnAccept.setDisable(true);
@@ -161,6 +193,7 @@ public class SignUpFXMLDocumentController {
         lblConfirmPassword.setText("");
         lblEmail.setText("");
     }
+
     /**
      * Text changed event handler. Validar que los campos login, email, full
      * name, password y confirm password están informados.

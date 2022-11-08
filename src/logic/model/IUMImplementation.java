@@ -9,44 +9,73 @@ import java.util.logging.Logger;
 
 import logic.objects.User;
 import logic.objects.message.Request;
+import logic.objects.message.Response;
 import static logic.objects.message.types.RequestType.SIGNIN;
 import static logic.objects.message.types.RequestType.SIGNUP;
 
 public class IUMImplementation implements IUserManager {
 
     @Override
-    public User signIn(User user) {
+    public Response signIn(User user) {
+        Request request = null;
+        Response response = null;
+        ObjectInputStream read = null;
+        ObjectOutputStream write = null;
         try {
-            Socket socket = new Socket("localhost", 7777);
-            Request request = new Request();
+            Socket socket = new Socket("localhost", 9107);
+            write = new ObjectOutputStream(socket.getOutputStream());
+            read = new ObjectInputStream(socket.getInputStream());
+
+            // Cargar los datos en el objeto Request 
+            // y mandar la informacion al lado Servidor
+            request = new Request();
             request.setUser(user);
             request.setRequestType(SIGNIN);
-            ObjectOutputStream mandarMensaje;
-            ObjectInputStream leerMensaje;
+            write.writeObject(request);
 
-            mandarMensaje = new ObjectOutputStream(socket.getOutputStream());
-            mandarMensaje.writeObject(request);
-        } catch (IOException ex) {
+            // Lee la Respuesta del lado Servidor
+            response = (Response) read.readObject();
+
+            //Cerrar flujos
+            socket.close();
+            read.close();
+            write.close();
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(IUMImplementation.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return user;
+        return response;
     }
 
     @Override
-    public User signUp(User user) {
+    public Response signUp(User user) {
+        Request request = null;
+        Response response = null;
+        ObjectInputStream read = null;
+        ObjectOutputStream write = null;
         try {
-            Socket socket = new Socket("localhost", 7777);
-            Request request = new Request();
+            Socket socket = new Socket("localhost", 9107);
+            write = new ObjectOutputStream(socket.getOutputStream());
+            read = new ObjectInputStream(socket.getInputStream());
+
+            // Cargar los datos en el objeto Request 
+            // y mandar la informacion al lado Servidor
+            request = new Request();
             request.setUser(user);
             request.setRequestType(SIGNUP);
-            ObjectOutputStream mandarMensaje;
-            ObjectInputStream leerMensaje;
+            write.writeObject(request);
 
-            mandarMensaje = new ObjectOutputStream(socket.getOutputStream());
-            mandarMensaje.writeObject(request);
-        } catch (IOException ex) {
+            // Lee la Respuesta del lado Servidor
+            response = (Response) read.readObject();
+
+            //Cerrar flujos
+            socket.close();
+            read.close();
+            write.close();
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(IUMImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e){
+            e.printStackTrace();
         }
-        return user;
+        return response;
     }
 }

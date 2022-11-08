@@ -4,6 +4,7 @@
  */
 package view.signIn;
 
+import except.LoginCredentialException;
 import except.LoginPasswordNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -24,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import logic.UserManagerFactory;
 import logic.objects.User;
+import logic.objects.message.Response;
 import view.logged.LoggedFXMLDocumentController;
 import view.signIn.SignInFXMLDocumentController;
 import view.signUp.SignUpFXMLDocumentController;
@@ -116,14 +118,16 @@ public class SignInFXMLDocumentController {
             btnAccept.setDisable(false);
         }
     }
-    
+
     /**
      * El evento es que cuando se toca el boton btnAccept abre la ventana Logged
+     *
      * @param event The action event object
      */
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
         try {
+            Response response = null;
             LOGGER.info("Intentando abrir la ventana Logged");
             //Objeto User con los valores de login y password
             User usSignIn = new User();
@@ -132,12 +136,13 @@ public class SignInFXMLDocumentController {
             /*Se usa la factoría para obtener una interfaz IUserManager, 
             y se llama al método signIn() pasándole un nuevo objeto
             User que contenga el valor login y el valor password.*/
-            User us = UserManagerFactory.getAccess().signIn(usSignIn);
+            response = UserManagerFactory.getAccess().signIn(usSignIn);
             /*Validar que existe un usuario con el
             mismo nombre de usuario introducido y
             que su contraseña coincide con el valor
             de la contraseña introducida.*/
-            if (!us.getLogin().equalsIgnoreCase(usSignIn.getLogin()) || !us.getPassword().equalsIgnoreCase(usSignIn.getPassword())) {
+            if (!response.getUser().getLogin().equalsIgnoreCase(usSignIn.getLogin())
+                    || !response.getUser().getPassword().equalsIgnoreCase(usSignIn.getPassword())) {
                 /*Si se produce un error,se abre una ventana emergente
                 mostrando el mensaje del error.*/
                 throw new LoginPasswordNotFoundException();
@@ -150,11 +155,13 @@ public class SignInFXMLDocumentController {
                 //COnseguir el controlador de la ventana Logged
                 LoggedFXMLDocumentController controller = (LoggedFXMLDocumentController) loader.getController();
                 controller.setStage(stageLogged);
-                controller.initLogged(root, us);
+                controller.initLogged(root, response.getUser());
             }
         } catch (IOException ex) {
             Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (LoginPasswordNotFoundException ex) {
+            new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+        } catch (LoginCredentialException ex) {
             new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
         }
     }
