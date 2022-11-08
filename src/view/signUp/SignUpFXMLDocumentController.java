@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import logic.ControllerSocket;
 import logic.UserManagerFactory;
 import logic.objects.User;
 import logic.objects.message.Response;
@@ -63,6 +64,7 @@ public class SignUpFXMLDocumentController {
     private ImageView imageView;
 
     private Stage stage;
+    private ControllerSocket control = null;
     private static final Logger LOGGER = Logger.getLogger("package view.signUp;");
 
     /**
@@ -98,7 +100,7 @@ public class SignUpFXMLDocumentController {
             user.setPassword(cpPassword.getText());
             user.setFullName(tfFullName.getText());
             //a continuación manda el objeto al método (sign up) de la implementación.
-            response = UserManagerFactory.getAccess().signUp(user);
+            response = UserManagerFactory.getAccess().signUp(user, control);
 
             if (response.getResponseType() != ResponseType.OK) {
                 Alert alert = new Alert(AlertType.WARNING);
@@ -154,7 +156,8 @@ public class SignUpFXMLDocumentController {
         tfLogin.requestFocus();
     }
 
-    public void initSignUp(Parent root) {
+    public void initSignUp(Parent root, ControllerSocket control) {
+        this.control = control;
         LOGGER.info("Inicializando la ventana SignUp");
         //Se crea una escena a partir del parent
         Scene scene = new Scene(root);

@@ -8,6 +8,7 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logic.ControllerSocket;
 
 import logic.objects.User;
 import logic.objects.message.Request;
@@ -19,16 +20,14 @@ import logic.objects.message.types.ResponseType;
 public class IUMImplementation implements IUserManager {
 
     @Override
-    public Response signIn(User user) throws ServerException {
+    public Response signIn(User user, ControllerSocket control) throws ServerException {
         Request request = null;
         Response response = null;
-
+        ObjectInputStream read = null;
+        ObjectOutputStream write = null;
         try {
-            ObjectInputStream read = null;
-            ObjectOutputStream write = null;
-            Socket socket = new Socket("localhost", 9107);
-            write = new ObjectOutputStream(socket.getOutputStream());
-            read = new ObjectInputStream(socket.getInputStream());
+            write = control.wObject();
+            read = control.rObject();
 
             // Cargar los datos en el objeto Request 
             // y mandar la informacion al lado Servidor
@@ -41,12 +40,12 @@ public class IUMImplementation implements IUserManager {
             response = (Response) read.readObject();
 
             //Cerrar flujos
-            socket.close();
+            control.closeSocket();
             read.close();
             write.close();
-        }catch (ConnectException e){
-        throw new ServerException();
-        }catch (IOException | ClassNotFoundException ex) {
+        } catch (ConnectException e) {
+            throw new ServerException();
+        } catch (IOException | ClassNotFoundException ex) {
             //response = new Response(null, ResponseType.SERVER_ERROR);
             /*response.setUser(null);
             response.setResponseType(ResponseType.SERVER_ERROR);
@@ -56,15 +55,14 @@ public class IUMImplementation implements IUserManager {
     }
 
     @Override
-    public Response signUp(User user) {
+    public Response signUp(User user, ControllerSocket control) {
         Request request = null;
         Response response = null;
         ObjectInputStream read = null;
         ObjectOutputStream write = null;
         try {
-            Socket socket = new Socket("localhost", 9107);
-            write = new ObjectOutputStream(socket.getOutputStream());
-            read = new ObjectInputStream(socket.getInputStream());
+            write = control.wObject();
+            read = control.rObject();
 
             // Cargar los datos en el objeto Request 
             // y mandar la informacion al lado Servidor
@@ -77,7 +75,7 @@ public class IUMImplementation implements IUserManager {
             response = (Response) read.readObject();
 
             //Cerrar flujos
-            socket.close();
+            control.closeSocket();
             read.close();
             write.close();
         } catch (IOException | ClassNotFoundException ex) {
