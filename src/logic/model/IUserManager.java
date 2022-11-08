@@ -11,7 +11,7 @@ public interface IUserManager {
     /**
      * whatever.
      */
-    public Response signIn(User pUser) throws LoginCredentialException;
+    public Response signIn(User pUser) throws LoginCredentialException, ServerException;
 
     public Response signUp(User pUser) throws ConnectionErrorException,
             ServerException,

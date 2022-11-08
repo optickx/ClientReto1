@@ -5,7 +5,7 @@
 package view.signIn;
 
 import except.LoginCredentialException;
-import except.LoginPasswordNotFoundException;
+import except.ServerException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
@@ -26,6 +27,7 @@ import javafx.stage.WindowEvent;
 import logic.UserManagerFactory;
 import logic.objects.User;
 import logic.objects.message.Response;
+import logic.objects.message.types.ResponseType;
 import view.logged.LoggedFXMLDocumentController;
 import view.signIn.SignInFXMLDocumentController;
 import view.signUp.SignUpFXMLDocumentController;
@@ -137,15 +139,12 @@ public class SignInFXMLDocumentController {
             y se llama al método signIn() pasándole un nuevo objeto
             User que contenga el valor login y el valor password.*/
             response = UserManagerFactory.getAccess().signIn(usSignIn);
-            /*Validar que existe un usuario con el
-            mismo nombre de usuario introducido y
-            que su contraseña coincide con el valor
-            de la contraseña introducida.*/
-            if (!response.getUser().getLogin().equalsIgnoreCase(usSignIn.getLogin())
-                    || !response.getUser().getPassword().equalsIgnoreCase(usSignIn.getPassword())) {
-                /*Si se produce un error,se abre una ventana emergente
-                mostrando el mensaje del error.*/
-                throw new LoginPasswordNotFoundException();
+            if (response.getResponseType() != ResponseType.OK) {
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText(response.getResponseType().name());
+                alert.setContentText("Try again");
+                alert.showAndWait();
             } else {
                 //Cerrar la ventana login
                 this.stageSignIn.close();
@@ -157,13 +156,14 @@ public class SignInFXMLDocumentController {
                 controller.setStage(stageLogged);
                 controller.initLogged(root, response.getUser());
             }
+
         } catch (IOException ex) {
-            Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (LoginPasswordNotFoundException ex) {
             new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
         } catch (LoginCredentialException ex) {
             new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
-        }
+        } catch (ServerException ex) {
+            new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+        } 
     }
 
     /**
