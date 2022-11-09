@@ -3,20 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+/*package logic;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.Logger;*/
 
 /**
  *
  * @author 2dam
  */
-public class ControllerSocket {
+/*public class ControllerSocket {
 
     private Socket socket;
 
@@ -60,3 +60,4 @@ public class ControllerSocket {
         }
     }
 }
+*/

@@ -24,7 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import logic.ControllerSocket;
+//import logic.ControllerSocket;
 import logic.UserManagerFactory;
 import logic.objects.User;
 import logic.objects.message.Response;
@@ -55,7 +55,7 @@ public class SignInFXMLDocumentController {
     private ImageView imageViewPassword;
 
     private Stage stageSignIn;
-    private ControllerSocket control = null;
+   // private ControllerSocket control = null;
     private static final Logger LOGGER = Logger.getLogger("package view.signIn");
 
     /**
@@ -82,7 +82,7 @@ public class SignInFXMLDocumentController {
         stageSignIn.show();
 
         //Crea la conexion con el servidor
-        control = new ControllerSocket();
+        //control = new ControllerSocket();
     }
 
     private void handlerWindowShowing(WindowEvent event) {
@@ -143,7 +143,7 @@ public class SignInFXMLDocumentController {
             /*Se usa la factoría para obtener una interfaz IUserManager, 
             y se llama al método signIn() pasándole un nuevo objeto
             User que contenga el valor login y el valor password.*/
-            response = UserManagerFactory.getAccess().signIn(usSignIn, control);
+            response = UserManagerFactory.getAccess().signIn(usSignIn/*, control*/);
             if (response.getResponseType() != ResponseType.OK) {
                 Alert alert = new Alert(AlertType.WARNING);
                 alert.setTitle("Error");
@@ -189,7 +189,7 @@ public class SignInFXMLDocumentController {
             //COnseguir el controlador de la ventana SignIn
             SignUpFXMLDocumentController controller = (SignUpFXMLDocumentController) loader.getController();
             controller.setStage(stageSignUp);
-            controller.initSignUp(root, control);
+            controller.initSignUp(root/*, control*/);
         } catch (IOException ex) {
             Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -197,5 +197,9 @@ public class SignInFXMLDocumentController {
 
     public void setStage(Stage stage) {
         this.stageSignIn = stage;
+    }
+
+    public void stop() throws Exception {
+        System.out.println("view.signUp.SignUpFXMLDocumentController.stop()");
     }
 }

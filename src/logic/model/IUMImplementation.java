@@ -8,7 +8,7 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import logic.ControllerSocket;
+//import logic.ControllerSocket;
 
 import logic.objects.User;
 import logic.objects.message.Request;
@@ -20,14 +20,17 @@ import logic.objects.message.types.ResponseType;
 public class IUMImplementation implements IUserManager {
 
     @Override
-    public Response signIn(User user, ControllerSocket control) throws ServerException {
+    public Response signIn(User user/*, ControllerSocket control*/) throws ServerException {
         Request request = null;
         Response response = null;
         ObjectInputStream read = null;
         ObjectOutputStream write = null;
         try {
-            write = control.wObject();
-            read = control.rObject();
+            Socket socket = new Socket("localhost", 9107);
+            // write = control.wObject();
+            //read = control.rObject();
+            write = new ObjectOutputStream(socket.getOutputStream());
+            read = new ObjectInputStream(socket.getInputStream());
 
             // Cargar los datos en el objeto Request 
             // y mandar la informacion al lado Servidor
@@ -40,7 +43,8 @@ public class IUMImplementation implements IUserManager {
             response = (Response) read.readObject();
 
             //Cerrar flujos
-            control.closeSocket();
+            // control.closeSocket();
+            socket.close();
             read.close();
             write.close();
         } catch (ConnectException e) {
@@ -55,14 +59,17 @@ public class IUMImplementation implements IUserManager {
     }
 
     @Override
-    public Response signUp(User user, ControllerSocket control) {
+    public Response signUp(User user/*, ControllerSocket control*/) throws ServerException {
         Request request = null;
         Response response = null;
         ObjectInputStream read = null;
         ObjectOutputStream write = null;
         try {
-            write = control.wObject();
-            read = control.rObject();
+            Socket socket = new Socket("localhost", 9107);
+            // write = control.wObject();
+            //read = control.rObject();
+            write = new ObjectOutputStream(socket.getOutputStream());
+            read = new ObjectInputStream(socket.getInputStream());
 
             // Cargar los datos en el objeto Request 
             // y mandar la informacion al lado Servidor
@@ -75,10 +82,13 @@ public class IUMImplementation implements IUserManager {
             response = (Response) read.readObject();
 
             //Cerrar flujos
-            control.closeSocket();
+            //control.closeSocket();
+            socket.close();
             read.close();
             write.close();
-        } catch (IOException | ClassNotFoundException ex) {
+        } catch (ConnectException e) {
+            throw new ServerException();
+        }catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(IUMImplementation.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception e) {
             e.printStackTrace();

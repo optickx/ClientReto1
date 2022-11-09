@@ -15,13 +15,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import logic.ControllerSocket;
+//import logic.ControllerSocket;
 import logic.UserManagerFactory;
 import logic.objects.User;
 import logic.objects.message.Response;
@@ -64,7 +65,7 @@ public class SignUpFXMLDocumentController {
     private ImageView imageView;
 
     private Stage stage;
-    private ControllerSocket control = null;
+//    private ControllerSocket control = null;
     private static final Logger LOGGER = Logger.getLogger("package view.signUp;");
 
     /**
@@ -100,7 +101,7 @@ public class SignUpFXMLDocumentController {
             user.setPassword(cpPassword.getText());
             user.setFullName(tfFullName.getText());
             //a continuación manda el objeto al método (sign up) de la implementación.
-            response = UserManagerFactory.getAccess().signUp(user, control);
+            response = UserManagerFactory.getAccess().signUp(user/*, control*/);
 
             if (response.getResponseType() != ResponseType.OK) {
                 Alert alert = new Alert(AlertType.WARNING);
@@ -130,7 +131,7 @@ public class SignUpFXMLDocumentController {
         } catch (LoginFormatException e) {
             lblLogin.setText(e.getMessage());
         } catch (ServerException ex) {
-            Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
         } catch (Exception ex) {
             Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -156,8 +157,8 @@ public class SignUpFXMLDocumentController {
         tfLogin.requestFocus();
     }
 
-    public void initSignUp(Parent root, ControllerSocket control) {
-        this.control = control;
+    public void initSignUp(Parent root/*, ControllerSocket control*/) {
+        //this.control = control;
         LOGGER.info("Inicializando la ventana SignUp");
         //Se crea una escena a partir del parent
         Scene scene = new Scene(root);
