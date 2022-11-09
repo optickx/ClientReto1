@@ -77,6 +77,10 @@ public class SignInFXMLDocumentController {
 
     private void handlerWindowShowing(WindowEvent event) {
         LOGGER.info("Iniciando SignInFXMLDocumentController::handlerWindowShowing");
+        //Login text view sin texto
+        tfLogin.setText("");
+        //Login text view sin texto
+        cpPassword.setText("");
         //Se desabilita el botton Accept
         btnAccept.setDisable(true);
         //Se enfoca el campo login
@@ -99,14 +103,16 @@ public class SignInFXMLDocumentController {
         en los campos de tflogin o de cppassword y si es asi
         desactiva el boton btnAccept y sale una alerta con un mensaje
          */
-        if (tfLogin.getText().trim().length() > 25
-                || cpPassword.getText().trim().length() > 25) {
+        if (tfLogin.getText().trim().length() > 25) {
             new Alert(Alert.AlertType.ERROR, "La longitud máxima del campo es de 25 caracteres.", ButtonType.OK).showAndWait();
             btnAccept.setDisable(true);
         }/*Validar que los campos Login y
         Password están informados.
         En el caso de que no lo estén
-        deshabilitar el botón Accept.*/ else if (tfLogin.getText().trim().isEmpty()
+        deshabilitar el botón Accept.*/ else if (cpPassword.getText().trim().length() > 25) {
+            new Alert(Alert.AlertType.ERROR, "La longitud máxima del campo es de 25 caracteres.", ButtonType.OK).showAndWait();
+            btnAccept.setDisable(true);
+        } else if (tfLogin.getText().trim().isEmpty()
                 || cpPassword.getText().trim().isEmpty()) {
             btnAccept.setDisable(true);
         }/*En el caso de que estén
@@ -115,9 +121,10 @@ public class SignInFXMLDocumentController {
             btnAccept.setDisable(false);
         }
     }
-    
+
     /**
      * El evento es que cuando se toca el boton btnAccept abre la ventana Logged
+     *
      * @param event The action event object
      */
     @FXML
