@@ -1,7 +1,10 @@
 package view.signUp;
 
 import except.EmailErrorException;
+import except.LoginFormatException;
+import except.ServerException;
 import except.UnmatchedPasswordsException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
@@ -9,7 +12,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -19,7 +25,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import logic.UserManagerFactory;
 import logic.objects.User;
+import logic.objects.message.Response;
+import logic.objects.message.types.ResponseType;
 
+/**
+ *
+ * @author 2dam
+ */
 public class SignUpFXMLDocumentController {
 
     /**
@@ -58,48 +70,68 @@ public class SignUpFXMLDocumentController {
     private static final Logger LOGGER = Logger.getLogger("package view.signUp;");
 
     /**
-     * Handle Action event on Accept button
+     * Handle Action event on Accept button, if all goes well sends the
+     * information to the server
      *
      * @param event The action event object
      */
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
         try {
-            //Oculta todos los labels con los mensajes de las
-            //  excepciones.
-            lblEmail.setText("");
-            lblConfirmPassword.setText("");
-
-            //Validar que el formato del email es correcto
-            // Patrón para validar el email
-            String pattern = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus)";
-            if (!Pattern.matches(pattern, tfEmail.getText())) {
+            Response response = null;
+            //Validates format of the login
+            if (Character.isDigit(tfLogin.getText().charAt(0))) {
+                throw new LoginFormatException();
+            }
+            //Validates the format of the email
+            String patternEmail = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus)";
+            if (!Pattern.matches(patternEmail, tfEmail.getText())) {
                 throw new EmailErrorException();
             }
 
-            //Validar que la confirm password coincida
+            //Validates both passwords
             if (!(cpPassword.getText().equals(cpConfirm.getText()))) {
                 throw new UnmatchedPasswordsException();
             }
 
-            //Carga los datos en un objeto User (PID se genera automaticamente, necesitamos saber la cantidad de usuarios en la base de datos
-            //a continuación manda el objeto al método (sign up) de la implementación.
-            String hola = "Hola";
+            //As all the data format is correct, introduce it on the Data model object
             User user = new User();
             user.setLogin(tfLogin.getText());
             user.setEmail(tfEmail.getText());
             user.setPassword(cpPassword.getText());
             user.setFullName(tfFullName.getText());
-            //0, hola, tfEmail.getText(), tfFullName.getText(), cpPassword.getText(), 0, 1, 2, null);
-            UserManagerFactory.getAccess().signUp(user);
+            //The object is sent to the implementation
+            response = UserManagerFactory.getAccess().signUp(user);
+
+            if (response.getResponseType() != ResponseType.OK) {
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText(response.getResponseType().name());
+                alert.setContentText("Try again");
+                alert.showAndWait();
+            } else {
+                //The user is succesfully created
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("SignUp");
+                alert.setHeaderText(null);
+                alert.setContentText("Signed Up succesfully, try logging in");
+                alert.showAndWait();
+                //The window SignUp closes, you return to the SignIn window
+                Stage stageN = (Stage) btnAccept.getScene().getWindow();
+                stageN.close();
+            }
 
         } catch (EmailErrorException e) {
             lblEmail.setText(e.getMessage());
         } catch (UnmatchedPasswordsException e) {
             lblConfirmPassword.setText(e.getMessage());
-        }/*catch (EmailExistsException e) {
-            lblEmail.setText(e.getMessage());
-        }*/
+        } catch (LoginFormatException e) {
+            lblLogin.setText(e.getMessage());
+        } catch (ServerException ex) {
+            new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+        } catch (Exception ex) {
+            Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -110,7 +142,7 @@ public class SignUpFXMLDocumentController {
     @FXML
     private void handleResetButtonAction(ActionEvent event
     ) {
-        //Vacía todos los campos 
+        //Empty all the fields 
         tfEmail.setText("");
         tfFullName.setText("");
         cpPassword.setText("");
@@ -118,25 +150,29 @@ public class SignUpFXMLDocumentController {
         tfLogin.setText("");
         lblConfirmPassword.setText("");
         lblEmail.setText("");
-        // enfoca el campo username.
+        //Focuses the login field
         tfLogin.requestFocus();
     }
-    
+
+    /**
+     * Initializing method
+     *
+     * @param root root object with the DOM charged
+     */
     public void initSignUp(Parent root) {
-        LOGGER.info("Inicializando la ventana SignUp");
-        //Se crea una escena a partir del parent
+        LOGGER.info("Initializing SignUp window");
         Scene scene = new Scene(root);
-        //Establece la escena en el escenario stage y la muestra
+        //Establishes the scene in the stage
         stage.setScene(scene);
-        //El nombre de la ventana es SignUp
+        //Window title
         stage.setTitle("Sign Up");
-        //Ventana modal
+        //Modal window
         stage.initModality(Modality.APPLICATION_MODAL);
-        //Ventana no redimensionable
+        //Not resizable window
         stage.setResizable(false);
-        //Poner los manejadores de eventos
+        //Set the Event handlers
         stage.setOnShowing(this::handlerWindowShowing);
-        //Poner a los textFields en escucha
+        //Set the textfields with a listener
         tfEmail.textProperty().addListener(this::textPropertyChange);
         tfLogin.textProperty().addListener(this::textPropertyChange);
         tfFullName.textProperty().addListener(this::textPropertyChange);
@@ -144,14 +180,14 @@ public class SignUpFXMLDocumentController {
         cpConfirm.textProperty().addListener(this::textPropertyChange);
         stage.showAndWait();
     }
-    private void handlerWindowShowing(WindowEvent event){
-        LOGGER.info("Iniciando SignUpFXMLDocumentController::handlerWindowShowing");
-        //Se desabilita el botton Accept
+
+    private void handlerWindowShowing(WindowEvent event) {
+        LOGGER.info("Starting SignUpFXMLDocumentController::handlerWindowShowing");
+        //Accept button is disabled
         btnAccept.setDisable(true);
-        //Se enfoca el campo login
+        //Login field is focused
         tfLogin.requestFocus();
-        /*Oculta los labels 
-        que muestran los mensajes de las excepciones*/
+        /*Hide the labels which show the exceptions*/
         tfEmail.setText("");
         tfFullName.setText("");
         cpPassword.setText("");
@@ -160,9 +196,11 @@ public class SignUpFXMLDocumentController {
         lblConfirmPassword.setText("");
         lblEmail.setText("");
     }
+
     /**
-     * Text changed event handler. Validar que los campos login, email, full
-     * name, password y confirm password están informados.
+     * Text changed event handler. Validate that all the fields are not empty
+     * and that they not surpass 25 characters. The Accept button is disabled if
+     * either of those are not fulfilled
      *
      * @param observable The value being observed.
      * @param oldValue The old value of the observable.
@@ -173,14 +211,32 @@ public class SignUpFXMLDocumentController {
             String newValue) {
         //If text fields values are longer than 25 (max value in Database), show error message and disable 
         //accept button
-        if (tfLogin.getText().trim().length() > 25
-                || tfEmail.getText().trim().length() > 25
-                || tfFullName.getText().trim().length() > 25
-                || cpPassword.getText().trim().length() > 25
-                || cpConfirm.getText().trim().length() > 25) {
+        if (tfLogin.getText().trim().length() > 25) {
+            tfLogin.setText(tfLogin.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the login is 25 characters\nCan't start with a digit.", ButtonType.OK).showAndWait();
             btnAccept.setDisable(true);
-        } //If text fields are empty disable accept buttton
-        else if (tfLogin.getText().trim().isEmpty()
+        }
+        if (tfEmail.getText().trim().length() > 25) {
+            tfEmail.setText(tfEmail.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the email is 25 characters.", ButtonType.OK).showAndWait();
+            btnAccept.setDisable(true);
+        }
+        if (tfFullName.getText().trim().length() > 25) {
+            tfFullName.setText(tfFullName.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the Full name is 25 characters.", ButtonType.OK).showAndWait();
+            btnAccept.setDisable(true);
+        }
+        if (cpPassword.getText().trim().length() > 25) {
+            cpPassword.setText(cpPassword.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the password is 25 characters.", ButtonType.OK).showAndWait();
+            btnAccept.setDisable(true);
+        }
+        if (cpConfirm.getText().trim().length() > 25) {
+            cpConfirm.setText(cpConfirm.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the password confirmation is 25 characters.", ButtonType.OK).showAndWait();
+            btnAccept.setDisable(true);
+        }//If text fields are empty disable accept buttton
+        if (tfLogin.getText().trim().isEmpty()
                 || tfEmail.getText().trim().isEmpty()
                 || tfFullName.getText().trim().isEmpty()
                 || cpPassword.getText().trim().isEmpty()

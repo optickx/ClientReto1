@@ -16,11 +16,11 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage stage){
+    public void start(Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signIn/SignIn.fxml"));
             Parent root = (Parent) loader.load();
-            //Conseguir el controldor de la ventana SignIn
+            //Obtain the Sign In window controller
             SignInFXMLDocumentController controller = (SignInFXMLDocumentController) loader.getController();
             controller.setStage(stage);
             controller.initSignIn(root);
