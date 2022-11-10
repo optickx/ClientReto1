@@ -19,6 +19,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -62,7 +63,9 @@ public class SignUpFXMLDocumentController {
     private Label lblConfirmPassword;
     @FXML
     private ImageView imageView;
-
+    @FXML
+    private Pane paneSignUp;
+    
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package view.signUp;");
 
@@ -244,7 +247,11 @@ public class SignUpFXMLDocumentController {
             btnAccept.setDisable(false);
         }
     }
-
+     /**
+     * Declarar que el stage de la clase controlladora 
+     * es el mismo al que le han pasado
+     * @param stage donde se muestra la ventana
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
