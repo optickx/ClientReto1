@@ -45,7 +45,6 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
     private Button btnAccept;
     private Button btnSignUp;
     private final String VACIO = "";
-    private Pane paneLogged;
     
     @Override
     public void start(Stage stage) throws Exception{
