@@ -84,16 +84,22 @@ public class SignUpFXMLDocumentController {
             //Validates format of the login
             if (Character.isDigit(tfLogin.getText().charAt(0)) || tfLogin.getText().contains(" ")) {
                 throw new LoginFormatException();
+            } else {
+                lblLogin.setText("");
             }
             //Validates the format of the email
             String patternEmail = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus)";
             if (!Pattern.matches(patternEmail, tfEmail.getText()) || tfEmail.getText().contains(" ")) {
                 throw new EmailErrorException();
+            } else {
+                lblEmail.setText("");
             }
 
             //Validates both passwords
             if (!(cpPassword.getText().equals(cpConfirm.getText())) || cpPassword.getText().contains(" ")) {
                 throw new PasswordErrorException();
+            } else {
+                lblConfirmPassword.setText("");
             }
 
             //Validates that the fullName doesn't have numbers

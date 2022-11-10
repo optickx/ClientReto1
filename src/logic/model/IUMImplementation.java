@@ -17,7 +17,7 @@ import static logic.objects.message.types.RequestType.SIGNIN;
 import static logic.objects.message.types.RequestType.SIGNUP;
 import logic.objects.message.types.ResponseType;
 
-public class IUMImplementation implements IUserManager {
+public class IUMImplementation implements IClientServer {
 
     @Override
     public Response signIn(User user) throws ServerException {
