@@ -35,7 +35,7 @@ import view.logged.LoggedFXMLDocumentController;
 
 /**
  *
- * @author 2dam
+ * @author Eneko
  */
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -45,7 +45,6 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
     private Button btnAccept;
     private Button btnSignUp;
     private final String VACIO = "";
-    private Pane paneLogged;
     
     @Override
     public void start(Stage stage) throws Exception{
@@ -62,7 +61,7 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
      * user starts the application
      */
     @Test
-    public void test1_InitialState() {
+    public void test0_InitialState() {
         verifyThat(tfLogin, isFocused());
         assertEquals(VACIO, tfLogin.getText());
         assertEquals(VACIO, cpPassword.getText());
@@ -70,10 +69,10 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
     }
     
     /**
-     * Test test that button Aceptar is disabled if user or password fields are empty.
+     * Tests that button Accept is disabled if user or password fields are empty.
     */ 
     @Test
-    public void test2_AceptarIsDisabled() {
+    public void test1_AceptarIsDisabled() {
         clickOn(tfLogin);
         write("username");
         verifyThat(btnAccept, isDisabled());
@@ -86,10 +85,10 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
     }
     
     /**
-     * Test test that button Aceptar is enabled when login and password fields are full.
+     * Test test that button Accept is enabled when login and password fields are full.
     */
     @Test
-    public void test3_AceptarIsEnabled() {
+    public void test2_AceptarIsEnabled() {
         clickOn(tfLogin);
         write("username");
         clickOn(cpPassword);
@@ -102,7 +101,7 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
      * either login or password field.
     */
     @Test
-    public void test4_ShowsMaxCharacterError(){
+    public void test3_ShowsMaxCharacterError(){
         clickOn(tfLogin);
         write("aaaaaaaaaaaaaaaaaaaaaaaaaa");
         verifyThat("The maximum lenght for the login is 25 characters.", isVisible());
@@ -119,7 +118,7 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
      * username that doesn´t match the password in the database
      */
     @Test
-    public void test5_IncorrectPasswordError(){
+    public void test4_IncorrectPasswordError(){
         clickOn(tfLogin);
         write("EnekoRuiz");
         clickOn(cpPassword);
@@ -134,16 +133,35 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
      * with a number.
      */
     @Test
-    public void test6_LoginFormatError(){
+    public void test5_LoginFormatError(){
         clickOn(tfLogin);
         write("1EnekoRuiz");
         clickOn(cpPassword);
         write("abcd*1234");
         clickOn(btnAccept);
-        verifyThat("Error with the format of the login, can't start with a number", isVisible());
+        verifyThat("Error with the format of the login, can't start with a number or contain a blank space", isVisible());
+        push(KeyCode.ENTER);
         clickOn(tfLogin);
         eraseText(10);
+        write("Eneko Ruiz");
+        clickOn(btnAccept);
+        verifyThat("Error with the format of the login, can't start with a number or contain a blank space", isVisible());
+        push(KeyCode.ENTER);
+    }
+    
+    /**
+     * Tests that an error is shown to the user when he writes a blank space
+     * in the password field
+     */
+    @Test
+    public void test6_PasswordFormatError(){
+        clickOn(tfLogin);
         write("EnekoRuiz");
+        clickOn(cpPassword);
+        write("abcd 1234");
+        clickOn(btnAccept);
+        verifyThat("Password can't contain blank spaces", isVisible());
+        push(KeyCode.ENTER);
     }
     
     /**
