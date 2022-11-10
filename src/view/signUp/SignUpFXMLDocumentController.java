@@ -208,15 +208,32 @@ public class SignUpFXMLDocumentController {
             String newValue) {
         //If text fields values are longer than 25 (max value in Database), show error message and disable 
         //accept button
-        if (tfLogin.getText().trim().length() > 25
-                || tfEmail.getText().trim().length() > 25
-                || tfFullName.getText().trim().length() > 25
-                || cpPassword.getText().trim().length() > 25
-                || cpConfirm.getText().trim().length() > 25) {
-            new Alert(Alert.AlertType.ERROR, "The maximum lenght for all the fields is 25 characters.", ButtonType.OK).showAndWait();
+        if (tfLogin.getText().trim().length() > 25) {
+            tfLogin.setText(tfLogin.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the login is 25 characters\nCan't start with a digit.", ButtonType.OK).showAndWait();
             btnAccept.setDisable(true);
-        } //If text fields are empty disable accept buttton
-        else if (tfLogin.getText().trim().isEmpty()
+        }
+        if (tfEmail.getText().trim().length() > 25) {
+            tfEmail.setText(tfEmail.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the email is 25 characters.", ButtonType.OK).showAndWait();
+            btnAccept.setDisable(true);
+        }
+        if (tfFullName.getText().trim().length() > 25) {
+            tfFullName.setText(tfFullName.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the Full name is 25 characters.", ButtonType.OK).showAndWait();
+            btnAccept.setDisable(true);
+        }
+        if (cpPassword.getText().trim().length() > 25) {
+            cpPassword.setText(cpPassword.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the password is 25 characters.", ButtonType.OK).showAndWait();
+            btnAccept.setDisable(true);
+        }
+        if (cpConfirm.getText().trim().length() > 25) {
+            cpConfirm.setText(cpConfirm.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the password confirmation is 25 characters.", ButtonType.OK).showAndWait();
+            btnAccept.setDisable(true);
+        }//If text fields are empty disable accept buttton
+        if (tfLogin.getText().trim().isEmpty()
                 || tfEmail.getText().trim().isEmpty()
                 || tfFullName.getText().trim().isEmpty()
                 || cpPassword.getText().trim().isEmpty()

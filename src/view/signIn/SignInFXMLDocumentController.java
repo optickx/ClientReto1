@@ -102,13 +102,13 @@ public class SignInFXMLDocumentController {
         //Checks if the lenght is above 25 characters, showing an alert if happens and erasing the las character
 
         if (tfLogin.getText().trim().length() > 25) {
+            tfLogin.setText(tfLogin.getText().substring(0, 25));
             new Alert(Alert.AlertType.ERROR, "The maximum lenght for the login is 25 characters.", ButtonType.OK).showAndWait();
-            tfLogin.setText(tfLogin.getText().substring(0, 24));
             btnAccept.setDisable(true);
         }
         if (cpPassword.getText().trim().length() > 25) {
+            cpPassword.setText(cpPassword.getText().substring(0, 25));
             new Alert(Alert.AlertType.ERROR, "The maximum lenght for the password is 25 characters.", ButtonType.OK).showAndWait();
-            cpPassword.setText(cpPassword.getText().substring(0, 24));
             btnAccept.setDisable(true);
         }
 //Validates that both fields are not empty

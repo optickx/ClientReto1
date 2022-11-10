@@ -18,10 +18,10 @@
         </ImageView>
         <TextField fx:id="tfLogin" layoutX="201.0" layoutY="151.0" prefHeight="25.0" prefWidth="149.0" promptText="Login" />
         <TextField fx:id="tfEmail" layoutX="201.0" layoutY="214.0" prefHeight="25.0" prefWidth="149.0" promptText="Email" />
-        <TextField fx:id="tfFullName" layoutX="203.0" layoutY="283.0" promptText="Full Name" />
-      <PasswordField fx:id="cpPassword" layoutX="203.0" layoutY="352.0" promptText="Password" />
-      <PasswordField fx:id="cpConfirm" layoutX="203.0" layoutY="419.0" promptText="Confirm password" />
-        <Button fx:id="btnReset" layoutX="205.0" layoutY="455.0" mnemonicParsing="false" onAction="#handleResetButtonAction" prefHeight="25.0" prefWidth="63.0" text="Reset" />
+        <TextField fx:id="tfFullName" layoutX="201.0" layoutY="283.0" promptText="Full Name" />
+      <PasswordField fx:id="cpPassword" layoutX="201.0" layoutY="352.0" promptText="Password" />
+      <PasswordField fx:id="cpConfirm" layoutX="201.0" layoutY="419.0" promptText="Confirm password" />
+        <Button fx:id="btnReset" layoutX="201.0" layoutY="455.0" mnemonicParsing="false" onAction="#handleResetButtonAction" prefHeight="25.0" prefWidth="63.0" text="Reset" />
         <Button fx:id="btnAccept" layoutX="281.0" layoutY="455.0" mnemonicParsing="false" onAction="#handleAcceptButtonAction" prefHeight="25.0" prefWidth="75.0" text="Accept" />
         <Label layoutX="200.0" layoutY="120.0" prefHeight="18.0" prefWidth="90.0" text="Login" />
         <Label layoutX="203.0" layoutY="191.0" prefHeight="17.0" prefWidth="42.0" text="Email:" />
@@ -32,8 +32,8 @@
          <font>
             <Font size="17.0" />
          </font></Label>
-        <Label fx:id="lblLogin" layoutX="356.0" layoutY="143.0" prefHeight="42.0" prefWidth="405.0" />
-        <Label fx:id="lblEmail" layoutX="356.0" layoutY="193.0" prefHeight="67.0" prefWidth="405.0" />
+        <Label fx:id="lblLogin" layoutX="380.0" layoutY="143.0" prefHeight="42.0" prefWidth="405.0" />
+        <Label fx:id="lblEmail" layoutX="380.0" layoutY="193.0" prefHeight="67.0" prefWidth="405.0" />
         <Label fx:id="lblFullName" layoutX="365.0" layoutY="287.0" prefHeight="17.0" prefWidth="405.0" />
         <Label fx:id="lblPassword" layoutX="365.0" layoutY="356.0" prefHeight="17.0" prefWidth="405.0" />
         <Label fx:id="lblConfirmPassword" layoutX="417.0" layoutY="423.0" prefHeight="17.0" prefWidth="344.0" />
