@@ -58,7 +58,10 @@ public class LoggedFXMLDocumentController {
         lblWelcome.setText("Welcome " + user.getLogin() + " to our aplication");
         stageLogged.show();
     }
-
+    /**
+     * Cuando clicas en el boton btnLogOut te cierra la
+     * @param event evento de clicar en el boton de LogOut
+     */
     @FXML
     private void handleLogOutButtonAction(ActionEvent event) {
         try {
@@ -76,7 +79,11 @@ public class LoggedFXMLDocumentController {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+     /**
+     * Declarar que el stage de la clase controlladora 
+     * es el mismo al que le han pasado
+     * @param stage donde se muestra la ventana
+     */
     public void setStage(Stage stage) {
         this.stageLogged = stage;
     }

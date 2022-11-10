@@ -74,7 +74,12 @@ public class SignInFXMLDocumentController {
         //Muestra la ventana
         stageSignIn.show();
     }
-
+    /**
+     * Metodo que controla que al inicializar la ventana 
+     * los campos esten vacios, el boton deshabilitado y 
+     * el focus en el primer campo
+     * @param event evento de mostrarse la ventana
+     */
     private void handlerWindowShowing(WindowEvent event) {
         LOGGER.info("Iniciando SignInFXMLDocumentController::handlerWindowShowing");
         //Login text view sin texto
@@ -188,7 +193,11 @@ public class SignInFXMLDocumentController {
             Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Declarar que el stage de la clase controlladora 
+     * es el mismo al que le han pasado
+     * @param stage donde se muestra la ventana
+     */
     public void setStage(Stage stage) {
         this.stageSignIn = stage;
     }

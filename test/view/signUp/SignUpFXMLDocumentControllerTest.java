@@ -19,8 +19,6 @@ import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isFocused;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
-import static org.testfx.matcher.base.NodeMatchers.isNull;
-import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 /**
  * Testing class for SignUp view and controller. Tests SignUp view behavior
