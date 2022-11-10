@@ -28,6 +28,7 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
+import static org.testfx.matcher.base.NodeMatchers.isFocused;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import view.logged.LoggedFXMLDocumentController;
@@ -55,8 +56,14 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
         btnSignUp = lookup("#btnSignUp").query();
     }
     
+   /**
+     * Tests that Login text field is focused and
+     * the Accept button is disabled when the
+     * user starts the application
+     */
     @Test
     public void test1_InitialState() {
+        verifyThat(tfLogin, isFocused());
         assertEquals(VACIO, tfLogin.getText());
         assertEquals(VACIO, cpPassword.getText());
         verifyThat(btnAccept, isDisabled());
@@ -108,13 +115,43 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
     }
     
     /**
+     * Tests that an alert is shown when the user tries to log with and existing
+     * username that doesn´t match the password in the database
+     */
+    @Test
+    public void test5_IncorrectPasswordError(){
+        clickOn(tfLogin);
+        write("EnekoRuiz");
+        clickOn(cpPassword);
+        write("tortillas");
+        clickOn(btnAccept);
+        verifyThat("Try again", isVisible());
+        push(KeyCode.ENTER);
+    }
+    
+    /**
+     * Tests that an error is shown to the user when he starts the Login field 
+     * with a number.
+     */
+    @Test
+    public void test6_LoginFormatError(){
+        clickOn(tfLogin);
+        write("1EnekoRuiz");
+        clickOn(cpPassword);
+        write("abcd*1234");
+        clickOn(btnAccept);
+        verifyThat("Error with the format of the login, can't start with a number", isVisible());
+        clickOn(tfLogin);
+        eraseText(10);
+        write("EnekoRuiz");
+    }
+    
+    /**
      * Tests that Logged view opens when a user that is registered in the database
      * clicks on sign in button. 
-    */ 
-    
-    
+    */
     @Test
-    public void test5_LoggedOpenedOnAcceptClick() {
+    public void test7_LoggedOpenedOnAcceptClick() {
         clickOn(tfLogin);
         write("EnekoRuiz");
         clickOn(cpPassword);
@@ -122,30 +159,22 @@ public class SignInFXMLDocumentControllerTest extends ApplicationTest{
         clickOn(btnAccept);
         verifyThat("#paneLogged", isVisible());
         clickOn("#btnLogOut");
-    }
+    }    
     
     /**
      * Tests that Sign Up view is opened when button Aceptar is 
      * clicked
-    */ 
-    
-    
+    */
     @Test
-    public void test7_SignUpOpenedOnAcceptClick(){
+    public void test8_SignUpOpenedOnAcceptClick(){
         clickOn(btnSignUp);
         verifyThat("#paneSignUp", isVisible());
     }
     
     /**
-     * When you tray to signIn and the server has an error
-     * (the server needs to not be running)
-    */ 
-    
-    /**
      * This test works only when the server side is off. To test this, make sure
      * that the server side of the application isn't working.
      */
-    
     @Ignore
     @Test
     public void test9_ServerError(){
