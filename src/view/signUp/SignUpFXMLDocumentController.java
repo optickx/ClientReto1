@@ -191,7 +191,11 @@ public class SignUpFXMLDocumentController {
             btnAccept.setDisable(false);
         }
     }
-
+     /**
+     * Declarar que el stage de la clase controlladora 
+     * es el mismo al que le han pasado
+     * @param stage donde se muestra la ventana
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
