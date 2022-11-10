@@ -1,15 +1,17 @@
 package view.signUp;
 
 import except.EmailErrorException;
+import except.FullNameFormatErrorException;
 import except.LoginFormatException;
 import except.ServerException;
-import except.UnmatchedPasswordsException;
+import except.PasswordErrorException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -65,7 +67,7 @@ public class SignUpFXMLDocumentController {
     private ImageView imageView;
     @FXML
     private Pane paneSignUp;
-    
+
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package view.signUp;");
 
@@ -80,20 +82,26 @@ public class SignUpFXMLDocumentController {
         try {
             Response response = null;
             //Validates format of the login
-            if (Character.isDigit(tfLogin.getText().charAt(0))) {
+            if (Character.isDigit(tfLogin.getText().charAt(0)) || tfLogin.getText().contains(" ")) {
                 throw new LoginFormatException();
             }
             //Validates the format of the email
             String patternEmail = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus)";
-            if (!Pattern.matches(patternEmail, tfEmail.getText())) {
+            if (!Pattern.matches(patternEmail, tfEmail.getText()) || tfEmail.getText().contains(" ")) {
                 throw new EmailErrorException();
             }
 
             //Validates both passwords
-            if (!(cpPassword.getText().equals(cpConfirm.getText()))) {
-                throw new UnmatchedPasswordsException();
+            if (!(cpPassword.getText().equals(cpConfirm.getText())) || cpPassword.getText().contains(" ")) {
+                throw new PasswordErrorException();
             }
 
+            //Validates that the fullName doesn't have numbers
+            for (int i = 0; i < tfFullName.getText().length(); i++) {
+                if (Character.isDigit(tfFullName.getText().charAt(i))) {
+                    throw new FullNameFormatErrorException();
+                }
+            }
             //As all the data format is correct, introduce it on the Data model object
             User user = new User();
             user.setLogin(tfLogin.getText());
@@ -123,12 +131,12 @@ public class SignUpFXMLDocumentController {
 
         } catch (EmailErrorException e) {
             lblEmail.setText(e.getMessage());
-        } catch (UnmatchedPasswordsException e) {
+        } catch (PasswordErrorException e) {
             lblConfirmPassword.setText(e.getMessage());
         } catch (LoginFormatException e) {
             lblLogin.setText(e.getMessage());
-        } catch (ServerException ex) {
-            new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+        } catch (FullNameFormatErrorException | ServerException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).showAndWait();
         } catch (Exception ex) {
             Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -235,7 +243,8 @@ public class SignUpFXMLDocumentController {
             cpConfirm.setText(cpConfirm.getText().substring(0, 25));
             new Alert(Alert.AlertType.ERROR, "The maximum lenght for the password confirmation is 25 characters.", ButtonType.OK).showAndWait();
             btnAccept.setDisable(true);
-        }//If text fields are empty disable accept buttton
+        }
+        //If text fields are empty disable accept buttton
         if (tfLogin.getText().trim().isEmpty()
                 || tfEmail.getText().trim().isEmpty()
                 || tfFullName.getText().trim().isEmpty()
@@ -247,9 +256,11 @@ public class SignUpFXMLDocumentController {
             btnAccept.setDisable(false);
         }
     }
-     /**
-     * Declarar que el stage de la clase controlladora 
-     * es el mismo al que le han pasado
+
+    /**
+     * Declarar que el stage de la clase controlladora es el mismo al que le han
+     * pasado
+     *
      * @param stage donde se muestra la ventana
      */
     public void setStage(Stage stage) {
