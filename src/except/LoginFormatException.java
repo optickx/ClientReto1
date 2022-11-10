@@ -16,7 +16,7 @@ public class LoginFormatException extends Exception {
      * detail message.
      */
     public LoginFormatException() {
-        super("Error with the format of the login, can't start with a number");
+        super("Error with the format of the login, can't start with a number or contain a blank space");
     }
 
     /**

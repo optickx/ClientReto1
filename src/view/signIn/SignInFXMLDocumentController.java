@@ -5,6 +5,8 @@
 package view.signIn;
 
 import except.LoginCredentialException;
+import except.LoginFormatException;
+import except.LoginPasswordFormatException;
 import except.ServerException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -78,10 +80,11 @@ public class SignInFXMLDocumentController {
         cpPassword.textProperty().addListener(this::textChanged);
         stageSignIn.show();
     }
+
     /**
-     * Metodo que controla que al inicializar la ventana 
-     * los campos esten vacios, el boton deshabilitado y 
-     * el focus en el primer campo
+     * Metodo que controla que al inicializar la ventana los campos esten
+     * vacios, el boton deshabilitado y el focus en el primer campo
+     *
      * @param event evento de mostrarse la ventana
      */
     private void handlerWindowShowing(WindowEvent event) {
@@ -141,11 +144,21 @@ public class SignInFXMLDocumentController {
         try {
             Response response = null;
             LOGGER.info("Intentando abrir la ventana Logged");
+
+            if (Character.isDigit(tfLogin.getText().charAt(0)) || tfLogin.getText().contains(" ")) {
+                throw new LoginFormatException();
+            }
+
+            //Validates password format
+            if (cpPassword.getText().contains(" ")) {
+                throw new LoginPasswordFormatException();
+            }
+
             //The data is charged into an User
             User usSignIn = new User();
             usSignIn.setLogin(tfLogin.getText());
             usSignIn.setPassword(cpPassword.getText());
-            //The factory is used to obtain the implementation, and the method signIn is called, sending the User from above.           y se llama al método signIn() pasándole un nuevo objeto
+            //The factory is used to obtain the implementation, and the method signIn is called, sending the User from above.  
             response = UserManagerFactory.getAccess().signIn(usSignIn);
             if (response.getResponseType() != ResponseType.OK) {
                 Alert alert = new Alert(AlertType.WARNING);
@@ -165,11 +178,8 @@ public class SignInFXMLDocumentController {
                 controller.initLogged(root, response.getUser());
             }
 
-        } catch (IOException ex) {
-            new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
-        } catch (LoginCredentialException ex) {
-            new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
-        } catch (ServerException ex) {
+        } catch (LoginCredentialException | ServerException
+                | LoginFormatException | LoginPasswordFormatException | IOException ex) {
             new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
         }
     }
@@ -195,9 +205,11 @@ public class SignInFXMLDocumentController {
             Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /**
-     * Declarar que el stage de la clase controlladora 
-     * es el mismo al que le han pasado
+     * Declarar que el stage de la clase controlladora es el mismo al que le han
+     * pasado
+     *
      * @param stage donde se muestra la ventana
      */
     public void setStage(Stage stage) {

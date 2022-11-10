@@ -9,14 +9,14 @@ package except;
  *
  * @author 2dam
  */
-public class UnmatchedPasswordsException extends Exception {
+public class PasswordErrorException extends Exception {
 
     /**
      * Creates a new instance of <code>UnmatchedPasswordsException</code>
      * without detail message.
      */
-    public UnmatchedPasswordsException() {
-        super("Password and Confirm Password do not match");
+    public PasswordErrorException() {
+        super("Password and Confirm Password do not match or are blank spaces");
     }
 
     /**
@@ -25,7 +25,7 @@ public class UnmatchedPasswordsException extends Exception {
      *
      * @param msg the detail message.
      */
-    public UnmatchedPasswordsException(String msg) {
+    public PasswordErrorException(String msg) {
         super(msg);
     }
 }
