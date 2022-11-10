@@ -1,20 +1,29 @@
 package logic.model;
 
-import except.ConnectionErrorException;
 import except.LoginCredentialException;
 import except.ServerException;
-//import logic.ControllerSocket;
 import logic.objects.User;
 import logic.objects.message.Response;
 
 public interface IUserManager {
 
     /**
-     * whatever.
+     *
+     * @param pUser a User with the login and the password value
+     * @return a Response with all the User object and a ResponseType value
+     * @throws LoginCredentialException the login value is not found on the
+     * database
+     * @throws ServerException the server is not opened
      */
-    public Response signIn(User pUser/*, ControllerSocket control*/) throws LoginCredentialException, ServerException;
+    public Response signIn(User pUser) throws LoginCredentialException, ServerException;
 
-    public Response signUp(User pUser/*, ControllerSocket control*/) throws ConnectionErrorException,
-            ServerException,
-            Exception;
+    /**
+     *
+     * @param pUser a user with the login,email,fullName and password values
+     * @return a Response with a User and a ResponseType value
+     * @throws ServerException the Server is not opened
+     */
+    public Response signUp(User pUser) throws
+            ServerException;
+
 }

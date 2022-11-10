@@ -16,7 +16,7 @@ public class LoginFormatException extends Exception {
      * detail message.
      */
     public LoginFormatException() {
-        super("Error in the format of the Login value: \nnot blank spaces and max 25 char");
+        super("Error with the format of the login, can't start with a number");
     }
 
     /**

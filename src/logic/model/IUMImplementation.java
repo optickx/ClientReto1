@@ -20,75 +20,64 @@ import logic.objects.message.types.ResponseType;
 public class IUMImplementation implements IUserManager {
 
     @Override
-    public Response signIn(User user/*, ControllerSocket control*/) throws ServerException {
+    public Response signIn(User user) throws ServerException {
         Request request = null;
         Response response = null;
         ObjectInputStream read = null;
         ObjectOutputStream write = null;
         try {
             Socket socket = new Socket("localhost", 9107);
-            // write = control.wObject();
-            //read = control.rObject();
             write = new ObjectOutputStream(socket.getOutputStream());
             read = new ObjectInputStream(socket.getInputStream());
 
-            // Cargar los datos en el objeto Request 
-            // y mandar la informacion al lado Servidor
+            // The data is introduced into the request and sent to the server side
             request = new Request();
             request.setUser(user);
             request.setRequestType(SIGNIN);
             write.writeObject(request);
 
-            // Lee la Respuesta del lado Servidor
+            // Receives the response from the server side
             response = (Response) read.readObject();
 
-            //Cerrar flujos
-            // control.closeSocket();
+            //Closes streams
             socket.close();
             read.close();
             write.close();
         } catch (ConnectException e) {
             throw new ServerException();
         } catch (IOException | ClassNotFoundException ex) {
-            //response = new Response(null, ResponseType.SERVER_ERROR);
-            /*response.setUser(null);
-            response.setResponseType(ResponseType.SERVER_ERROR);
-            return response;*/
+            ex.printStackTrace();
         }
         return response;
     }
 
     @Override
-    public Response signUp(User user/*, ControllerSocket control*/) throws ServerException {
+    public Response signUp(User user) throws ServerException {
         Request request = null;
         Response response = null;
         ObjectInputStream read = null;
         ObjectOutputStream write = null;
         try {
             Socket socket = new Socket("localhost", 9107);
-            // write = control.wObject();
-            //read = control.rObject();
             write = new ObjectOutputStream(socket.getOutputStream());
             read = new ObjectInputStream(socket.getInputStream());
 
-            // Cargar los datos en el objeto Request 
-            // y mandar la informacion al lado Servidor
+            // The data is introduced into the request and sent to the server side
             request = new Request();
             request.setUser(user);
             request.setRequestType(SIGNUP);
             write.writeObject(request);
 
-            // Lee la Respuesta del lado Servidor
+            // Reads the response from the server
             response = (Response) read.readObject();
 
-            //Cerrar flujos
-            //control.closeSocket();
+            //Close streams
             socket.close();
             read.close();
             write.close();
         } catch (ConnectException e) {
             throw new ServerException();
-        }catch (IOException | ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(IUMImplementation.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception e) {
             e.printStackTrace();

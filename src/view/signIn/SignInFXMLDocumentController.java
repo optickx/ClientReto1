@@ -24,13 +24,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-//import logic.ControllerSocket;
 import logic.UserManagerFactory;
 import logic.objects.User;
 import logic.objects.message.Response;
 import logic.objects.message.types.ResponseType;
 import view.logged.LoggedFXMLDocumentController;
-import view.signIn.SignInFXMLDocumentController;
 import view.signUp.SignUpFXMLDocumentController;
 
 /**
@@ -55,34 +53,30 @@ public class SignInFXMLDocumentController {
     private ImageView imageViewPassword;
 
     private Stage stageSignIn;
-   // private ControllerSocket control = null;
+    // private ControllerSocket control = null;
     private static final Logger LOGGER = Logger.getLogger("package view.signIn");
 
     /**
-     * Metodo de inicialización de la ventana no modal SignIn
+     * Initializing method
      *
-     * @param root Un objeto parent con el DOM cargado
+     * @param root root object with the DOM charged
      */
     public void initSignIn(Parent root) {
-        LOGGER.info("Inicializando la ventana SignIn");
-        //Se crea una escena a partir del parent
+        LOGGER.info("Initializing SignIn window");
+        //Creates an scene
         Scene scene = new Scene(root);
-        //Establece la escena en el escenario
+        //Establishes an scene
         stageSignIn.setScene(scene);
-        //Nombre de la ventana
+        //Window title
         stageSignIn.setTitle("SignIn");
-        //Ventana no redimensionable
+        //Not resizable window
         stageSignIn.setResizable(false);
-        //Poner los manejadores de eventos
+        //Set the Event handlers
         stageSignIn.setOnShowing(this::handlerWindowShowing);
-        //Los campos de login y password estan apuntando al metodo textChanged
+        //Set the textfields with a listener
         tfLogin.textProperty().addListener(this::textChanged);
         cpPassword.textProperty().addListener(this::textChanged);
-        //Muestra la ventana
         stageSignIn.show();
-
-        //Crea la conexion con el servidor
-        //control = new ControllerSocket();
     }
 
     private void handlerWindowShowing(WindowEvent event) {
@@ -94,40 +88,42 @@ public class SignInFXMLDocumentController {
     }
 
     /**
-     * Metodo de cambio de texto que determina que el maximo de caracteres
-     * posibles sera 25 y habilitara el boton btnAccept si no hay texto alguno
-     * en los campos
+     * Text changed event handler. Validate that all the fields are not empty
+     * and that they not surpass 25 characters. The Accept button is disabled if
+     * either of those are not fulfilled
      *
-     * @param observable El valor que esta siendo ovservado
-     * @param oldValue La version vieja del observable
-     * @param newValue La version nueva del observable
+     * @param observable The value being observed.
+     * @param oldValue The old value of the observable.
+     * @param newValue The new value of the observable.
      */
     private void textChanged(ObservableValue observable,
             String oldValue,
             String newValue) {
-        /*Mira si el numero de caracteres es superior a 25
-        en los campos de tflogin o de cppassword y si es asi
-        desactiva el boton btnAccept y sale una alerta con un mensaje
-         */
-        if (tfLogin.getText().trim().length() > 25
-                || cpPassword.getText().trim().length() > 25) {
-            new Alert(Alert.AlertType.ERROR, "La longitud máxima del campo es de 25 caracteres.", ButtonType.OK).showAndWait();
+        //Checks if the lenght is above 25 characters, showing an alert if happens and erasing the las character
+
+        if (tfLogin.getText().trim().length() > 25) {
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the login is 25 characters.", ButtonType.OK).showAndWait();
+            tfLogin.setText(tfLogin.getText().substring(0, 24));
             btnAccept.setDisable(true);
-        }/*Validar que los campos Login y
-        Password están informados.
-        En el caso de que no lo estén
-        deshabilitar el botón Accept.*/ else if (tfLogin.getText().trim().isEmpty()
+        }
+        if (cpPassword.getText().trim().length() > 25) {
+            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the password is 25 characters.", ButtonType.OK).showAndWait();
+            cpPassword.setText(cpPassword.getText().substring(0, 24));
+            btnAccept.setDisable(true);
+        }
+//Validates that both fields are not empty
+        if (tfLogin.getText().trim().isEmpty()
                 || cpPassword.getText().trim().isEmpty()) {
             btnAccept.setDisable(true);
-        }/*En el caso de que estén
-        informados, habilitar el botón
-        Accept*/ else {
+        }//All the data is filled correctly and the button is enabled
+        else {
             btnAccept.setDisable(false);
         }
     }
 
     /**
-     * El evento es que cuando se toca el boton btnAccept abre la ventana Logged
+     * Handle Action event on Accept button, if all goes well, the logged window
+     * shows, if not, an alert is shown with the error
      *
      * @param event The action event object
      */
@@ -136,14 +132,12 @@ public class SignInFXMLDocumentController {
         try {
             Response response = null;
             LOGGER.info("Intentando abrir la ventana Logged");
-            //Objeto User con los valores de login y password
+            //The data is charged into an User
             User usSignIn = new User();
             usSignIn.setLogin(tfLogin.getText());
             usSignIn.setPassword(cpPassword.getText());
-            /*Se usa la factoría para obtener una interfaz IUserManager, 
-            y se llama al método signIn() pasándole un nuevo objeto
-            User que contenga el valor login y el valor password.*/
-            response = UserManagerFactory.getAccess().signIn(usSignIn/*, control*/);
+            //The factory is used to obtain the implementation, and the method signIn is called, sending the User from above.           y se llama al método signIn() pasándole un nuevo objeto
+            response = UserManagerFactory.getAccess().signIn(usSignIn);
             if (response.getResponseType() != ResponseType.OK) {
                 Alert alert = new Alert(AlertType.WARNING);
                 alert.setTitle("Error");
@@ -151,12 +145,12 @@ public class SignInFXMLDocumentController {
                 alert.setContentText("Try again");
                 alert.showAndWait();
             } else {
-                //Cerrar la ventana login
+                //Closing SignIn window
                 this.stageSignIn.close();
                 Stage stageLogged = new Stage();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/logged/Logged.fxml"));
                 Parent root = (Parent) loader.load();
-                //COnseguir el controlador de la ventana Logged
+                //Opens the Logged window
                 LoggedFXMLDocumentController controller = (LoggedFXMLDocumentController) loader.getController();
                 controller.setStage(stageLogged);
                 controller.initLogged(root, response.getUser());
@@ -172,24 +166,22 @@ public class SignInFXMLDocumentController {
     }
 
     /**
-     * El evento es que cuando se toca el boton btnSignUp abre la ventana SignUp
-     * de manera modal
+     * The event which opens the Sign Up window
      *
      * @param event
      */
     @FXML
     private void handleSignUpButtonAction(ActionEvent event) {
         try {
-            LOGGER.info("Intentando abrir la ventana SignUp");
-            /*Para poder abrir modalmente la ventana
-            he declaro otro stage diferenete*/
+            LOGGER.info("Oppening SignUp window");
+            //We need another stage to open it in a Modal way
             Stage stageSignUp = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signUp/SignUp.fxml"));
             Parent root = (Parent) loader.load();
-            //COnseguir el controlador de la ventana SignIn
+            //Obtain the controller of the Sign Up window
             SignUpFXMLDocumentController controller = (SignUpFXMLDocumentController) loader.getController();
             controller.setStage(stageSignUp);
-            controller.initSignUp(root/*, control*/);
+            controller.initSignUp(root);
         } catch (IOException ex) {
             Logger.getLogger(SignInFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -197,9 +189,5 @@ public class SignInFXMLDocumentController {
 
     public void setStage(Stage stage) {
         this.stageSignIn = stage;
-    }
-
-    public void stop() throws Exception {
-        System.out.println("view.signUp.SignUpFXMLDocumentController.stop()");
     }
 }

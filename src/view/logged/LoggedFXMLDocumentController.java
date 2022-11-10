@@ -37,24 +37,22 @@ public class LoggedFXMLDocumentController {
     private static final Logger LOGGER = Logger.getLogger("package view.logged;");
 
     /**
-     * Metodo de inicialización de la ventana
+     * Method of initializing the window
      *
-     * @param root Un objeto parent con el DOM cargado
-     * @param user Un objeto user
+     * @param root Parent object with the DOM charged
+     * @param user User object
      */
     public void initLogged(Parent root, User user) {
-        LOGGER.info("Inicializando la ventana SignIn");
-        //Se crea una escena a partir del parent
+        LOGGER.info("Initializing SignIn window");
+        //Creates an scene
         Scene scene = new Scene(root);
-        //Establece la escena en el escenario
+        //Establishes the scenary
         stageLogged.setScene(scene);
-        //El nombre de la ventana es Logged
+        //Set window title
         stageLogged.setTitle("Logged");
-        //Ventana no redimensionable
+        //Set resizability
         stageLogged.setResizable(false);
-        /*La ventana recibe un objeto Usuario
-        y muestra el valor del campo
-        Login*/
+        //The windows shows a welcome to the user logged with its login value
         lblWelcome.setText("Welcome " + user.getLogin() + " to our aplication");
         stageLogged.show();
     }
@@ -62,13 +60,13 @@ public class LoggedFXMLDocumentController {
     @FXML
     private void handleLogOutButtonAction(ActionEvent event) {
         try {
-            //Cerrar la ventana con el metodo close()
+            //Closes the window
             this.stageLogged.close();
-            //Se inicia la ventana no modal SignIn
+            //Initializes the not modal Sign In window
             Stage stageSignIn = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signIn/SignIn.fxml"));
             Parent root = (Parent) loader.load();
-            //Conseguir el controldor de la ventana Logged
+            //Obtains the controller of the logged window
             SignInFXMLDocumentController controller = (SignInFXMLDocumentController) loader.getController();
             controller.setStage(stageSignIn);
             controller.initSignIn(root);
