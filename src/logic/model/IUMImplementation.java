@@ -8,8 +8,6 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import logic.ControllerSocket;
-
 import logic.objects.User;
 import logic.objects.message.Request;
 import logic.objects.message.Response;
@@ -17,8 +15,18 @@ import static logic.objects.message.types.RequestType.SIGNIN;
 import static logic.objects.message.types.RequestType.SIGNUP;
 import logic.objects.message.types.ResponseType;
 
+/**
+ *
+ * @author Eneko, Roke
+ */
 public class IUMImplementation implements IClientServer {
 
+    /**
+     *
+     * @param user
+     * @return response with the ResponseType and the whole User
+     * @throws ServerException when the server is not started
+     */
     @Override
     public Response signIn(User user) throws ServerException {
         Request request = null;
@@ -51,6 +59,12 @@ public class IUMImplementation implements IClientServer {
         return response;
     }
 
+    /**
+     *
+     * @param user
+     * @return response with the ResponseType and the whole User
+     * @throws ServerException when the server is not started
+     */
     @Override
     public Response signUp(User user) throws ServerException {
         Request request = null;
