@@ -35,7 +35,7 @@ import view.signUp.SignUpFXMLDocumentController;
 
 /**
  *
- * @author Nerea and Dani
+ * @author Nerea, Dani
  */
 public class SignInFXMLDocumentController {
 
@@ -82,10 +82,9 @@ public class SignInFXMLDocumentController {
     }
 
     /**
-     * Metodo que controla que al inicializar la ventana los campos esten
-     * vacios, el boton deshabilitado y el focus en el primer campo
+     * Method that handles the startup of the SignIn
      *
-     * @param event evento de mostrarse la ventana
+     * @param event event of showing the window
      */
     private void handlerWindowShowing(WindowEvent event) {
         LOGGER.info("Iniciando SignInFXMLDocumentController::handlerWindowShowing");
@@ -207,10 +206,9 @@ public class SignInFXMLDocumentController {
     }
 
     /**
-     * Declarar que el stage de la clase controlladora es el mismo al que le han
-     * pasado
+     * Prepare the stage for a change of scene
      *
-     * @param stage donde se muestra la ventana
+     * @param stage where the window shows
      */
     public void setStage(Stage stage) {
         this.stageSignIn = stage;

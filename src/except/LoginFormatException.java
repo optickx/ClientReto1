@@ -7,7 +7,7 @@ package except;
 
 /**
  *
- * @author 2dam
+ * @author Roke
  */
 public class LoginFormatException extends Exception {
 

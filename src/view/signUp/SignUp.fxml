@@ -19,7 +19,7 @@
         <TextField fx:id="tfLogin" layoutX="201.0" layoutY="151.0" prefHeight="25.0" prefWidth="149.0" promptText="Login" />
         <TextField fx:id="tfEmail" layoutX="201.0" layoutY="214.0" prefHeight="25.0" prefWidth="149.0" promptText="Email" />
         <TextField fx:id="tfFullName" layoutX="201.0" layoutY="283.0" promptText="Full Name" />
-      <PasswordField fx:id="cpPassword" layoutX="201.0" layoutY="352.0" promptText="Password" />
+      <PasswordField fx:id="cpPass" layoutX="201.0" layoutY="352.0" promptText="Password" />
       <PasswordField fx:id="cpConfirm" layoutX="201.0" layoutY="419.0" promptText="Confirm password" />
         <Button fx:id="btnReset" layoutX="201.0" layoutY="455.0" mnemonicParsing="false" onAction="#handleResetButtonAction" prefHeight="25.0" prefWidth="63.0" text="Reset" />
         <Button fx:id="btnAccept" layoutX="281.0" layoutY="455.0" mnemonicParsing="false" onAction="#handleAcceptButtonAction" prefHeight="25.0" prefWidth="75.0" text="Accept" />

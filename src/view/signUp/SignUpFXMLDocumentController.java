@@ -32,19 +32,16 @@ import logic.objects.message.types.ResponseType;
 
 /**
  *
- * @author 2dam
+ * @author Eneko, Roke
  */
 public class SignUpFXMLDocumentController {
 
-    /**
-     * @author Eneko and Roke
-     */
     @FXML
     private TextField tfEmail;
     @FXML
     private TextField tfFullName;
     @FXML
-    private TextField cpPassword;
+    private TextField cpPass;
     @FXML
     private TextField cpConfirm;
     @FXML
@@ -96,7 +93,7 @@ public class SignUpFXMLDocumentController {
             }
 
             //Validates both passwords
-            if (!(cpPassword.getText().equals(cpConfirm.getText())) || cpPassword.getText().contains(" ")) {
+            if (!(cpPass.getText().equals(cpConfirm.getText())) || cpPass.getText().contains(" ")) {
                 throw new PasswordErrorException();
             } else {
                 lblConfirmPassword.setText("");
@@ -112,7 +109,7 @@ public class SignUpFXMLDocumentController {
             User user = new User();
             user.setLogin(tfLogin.getText());
             user.setEmail(tfEmail.getText());
-            user.setPassword(cpPassword.getText());
+            user.setPassword(cpPass.getText());
             user.setFullName(tfFullName.getText());
             //The object is sent to the implementation
             response = UserManagerFactory.getAccess().signUp(user);
@@ -160,7 +157,7 @@ public class SignUpFXMLDocumentController {
         //Empty all the fields 
         tfEmail.setText("");
         tfFullName.setText("");
-        cpPassword.setText("");
+        cpPass.setText("");
         cpConfirm.setText("");
         tfLogin.setText("");
         lblConfirmPassword.setText("");
@@ -191,11 +188,16 @@ public class SignUpFXMLDocumentController {
         tfEmail.textProperty().addListener(this::textPropertyChange);
         tfLogin.textProperty().addListener(this::textPropertyChange);
         tfFullName.textProperty().addListener(this::textPropertyChange);
-        cpPassword.textProperty().addListener(this::textPropertyChange);
+        cpPass.textProperty().addListener(this::textPropertyChange);
         cpConfirm.textProperty().addListener(this::textPropertyChange);
         stage.showAndWait();
     }
 
+    /**
+     * Method that handles the startup of the SignUp
+     *
+     * @param event event of showing the window
+     */
     private void handlerWindowShowing(WindowEvent event) {
         LOGGER.info("Starting SignUpFXMLDocumentController::handlerWindowShowing");
         //Accept button is disabled
@@ -205,7 +207,7 @@ public class SignUpFXMLDocumentController {
         /*Hide the labels which show the exceptions*/
         tfEmail.setText("");
         tfFullName.setText("");
-        cpPassword.setText("");
+        cpPass.setText("");
         cpConfirm.setText("");
         tfLogin.setText("");
         lblConfirmPassword.setText("");
@@ -228,34 +230,34 @@ public class SignUpFXMLDocumentController {
         //accept button
         if (tfLogin.getText().trim().length() > 25) {
             tfLogin.setText(tfLogin.getText().substring(0, 25));
-            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the login is 25 characters\nCan't start with a digit.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.ERROR, "The maximum length for the login is 25 characters\nCan't start with a digit.", ButtonType.OK).showAndWait();
             btnAccept.setDisable(true);
         }
         if (tfEmail.getText().trim().length() > 25) {
             tfEmail.setText(tfEmail.getText().substring(0, 25));
-            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the email is 25 characters.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.ERROR, "The maximum length for the email is 25 characters.", ButtonType.OK).showAndWait();
             btnAccept.setDisable(true);
         }
         if (tfFullName.getText().trim().length() > 25) {
             tfFullName.setText(tfFullName.getText().substring(0, 25));
-            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the Full name is 25 characters.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.ERROR, "The maximum length for the Full name is 25 characters.", ButtonType.OK).showAndWait();
             btnAccept.setDisable(true);
         }
-        if (cpPassword.getText().trim().length() > 25) {
-            cpPassword.setText(cpPassword.getText().substring(0, 25));
-            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the password is 25 characters.", ButtonType.OK).showAndWait();
+        if (cpPass.getText().trim().length() > 25) {
+            cpPass.setText(cpPass.getText().substring(0, 25));
+            new Alert(Alert.AlertType.ERROR, "The maximum length for the password is 25 characters.", ButtonType.OK).showAndWait();
             btnAccept.setDisable(true);
         }
         if (cpConfirm.getText().trim().length() > 25) {
             cpConfirm.setText(cpConfirm.getText().substring(0, 25));
-            new Alert(Alert.AlertType.ERROR, "The maximum lenght for the password confirmation is 25 characters.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.ERROR, "The maximum length for the password confirmation is 25 characters.", ButtonType.OK).showAndWait();
             btnAccept.setDisable(true);
         }
         //If text fields are empty disable accept buttton
         if (tfLogin.getText().trim().isEmpty()
                 || tfEmail.getText().trim().isEmpty()
                 || tfFullName.getText().trim().isEmpty()
-                || cpPassword.getText().trim().isEmpty()
+                || cpPass.getText().trim().isEmpty()
                 || cpConfirm.getText().trim().isEmpty()) {
             btnAccept.setDisable(true);
         } //Else, enable accept button
@@ -265,10 +267,9 @@ public class SignUpFXMLDocumentController {
     }
 
     /**
-     * Declarar que el stage de la clase controlladora es el mismo al que le han
-     * pasado
+     * Prepare the stage for a change of scene
      *
-     * @param stage donde se muestra la ventana
+     * @param stage where the window shows
      */
     public void setStage(Stage stage) {
         this.stage = stage;

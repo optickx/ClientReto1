@@ -22,7 +22,7 @@ import view.signIn.SignInFXMLDocumentController;
 
 /**
  *
- * @author Nerea and Dani
+ * @author Nerea, Dani
  */
 public class LoggedFXMLDocumentController {
 
@@ -56,9 +56,11 @@ public class LoggedFXMLDocumentController {
         lblWelcome.setText("Welcome " + user.getLogin() + " to our aplication");
         stageLogged.show();
     }
+
     /**
-     * Cuando clicas en el boton btnLogOut te cierra la
-     * @param event evento de clicar en el boton de LogOut
+     * Changes the scene from logged to signIn when button is clicked
+     *
+     * @param event LogOut event
      */
     @FXML
     private void handleLogOutButtonAction(ActionEvent event) {
@@ -77,10 +79,11 @@ public class LoggedFXMLDocumentController {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-     /**
-     * Declarar que el stage de la clase controlladora 
-     * es el mismo al que le han pasado
-     * @param stage donde se muestra la ventana
+
+    /**
+     * Prepare the stage for a change of scene
+     *
+     * @param stage where the window shows
      */
     public void setStage(Stage stage) {
         this.stageLogged = stage;

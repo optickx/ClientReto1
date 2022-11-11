@@ -34,7 +34,7 @@ import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 /**
  *
- * @author 2dam
+ * @author Eneko
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LoggedFXMLDocumentControllerTest extends ApplicationTest {
@@ -43,6 +43,7 @@ public class LoggedFXMLDocumentControllerTest extends ApplicationTest {
     private TextField cpPassword;
     private Label lblWelcome;
     private Button btnAccept;
+
     /**
      * Starts application to be tested.
      *
@@ -56,10 +57,10 @@ public class LoggedFXMLDocumentControllerTest extends ApplicationTest {
         cpPassword = lookup("#cpPassword").query();
         btnAccept = lookup("#btnAccept").query();
     }
-    
+
     /**
-     * Logs into the application, tests that the Logged pane is visible and verifies
-     * that the Sign In pane is visible after clicking on log out.
+     * Logs into the application, tests that the Logged pane is visible and
+     * verifies that the Sign In pane is visible after clicking on log out.
      */
     @Test
     public void test1_OpenLogged() {
