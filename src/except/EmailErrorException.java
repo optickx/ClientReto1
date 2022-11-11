@@ -16,7 +16,7 @@ public class EmailErrorException extends Exception {
      * message.
      */
     public EmailErrorException() {
-        super("Error in the email format, must be a valid email address without blank spaces");
+        super("Error in the email format,\nmust be a valid email address without blank spaces");
     }
 
     /**

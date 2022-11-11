@@ -144,7 +144,8 @@ public class SignUpFXMLDocumentController {
         } catch (FullNameFormatErrorException | ServerException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).showAndWait();
         } catch (Exception ex) {
-            Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+//Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

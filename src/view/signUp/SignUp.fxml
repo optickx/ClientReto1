@@ -32,8 +32,8 @@
          <font>
             <Font size="17.0" />
          </font></Label>
-        <Label fx:id="lblLogin" layoutX="380.0" layoutY="143.0" prefHeight="42.0" prefWidth="405.0" />
-        <Label fx:id="lblEmail" layoutX="380.0" layoutY="193.0" prefHeight="67.0" prefWidth="405.0" />
+        <Label fx:id="lblLogin" layoutX="356.0" layoutY="134.0" prefHeight="59.0" prefWidth="436.0" />
+        <Label fx:id="lblEmail" layoutX="349.0" layoutY="201.0" prefHeight="59.0" prefWidth="449.0" />
         <Label fx:id="lblFullName" layoutX="365.0" layoutY="287.0" prefHeight="17.0" prefWidth="405.0" />
         <Label fx:id="lblPassword" layoutX="365.0" layoutY="356.0" prefHeight="17.0" prefWidth="405.0" />
         <Label fx:id="lblConfirmPassword" layoutX="417.0" layoutY="423.0" prefHeight="17.0" prefWidth="344.0" />
