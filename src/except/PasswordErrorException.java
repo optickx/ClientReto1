@@ -16,7 +16,7 @@ public class PasswordErrorException extends Exception {
      * without detail message.
      */
     public PasswordErrorException() {
-        super("Password and Confirm Password do not match or are blank spaces");
+        super("Password and Confirm Password do not match\n or are blank spaces");
     }
 
     /**
