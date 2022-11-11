@@ -5,7 +5,7 @@ import logic.model.IClientServer;
 
 /**
  * 
- * @author Dani
+ * @author dani
  */
 public class UserManagerFactory {
    /** * @return an object that implements the interface
