@@ -13,10 +13,8 @@ import logic.objects.message.Request;
 import logic.objects.message.Response;
 import static logic.objects.message.types.RequestType.SIGNIN;
 import static logic.objects.message.types.RequestType.SIGNUP;
-import logic.objects.message.types.ResponseType;
 
 /**
- *
  * @author Eneko, Roke
  */
 public class IUMImplementation implements IClientServer {
