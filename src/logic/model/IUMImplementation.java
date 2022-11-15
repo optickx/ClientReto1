@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import logic.objects.User;
@@ -31,8 +32,9 @@ public class IUMImplementation implements IClientServer {
         Response response = null;
         ObjectInputStream read = null;
         ObjectOutputStream write = null;
+        int port = Integer.parseInt(ResourceBundle.getBundle("resources.port").getString("PORT"));
         try {
-            Socket socket = new Socket("localhost", 9107);
+            Socket socket = new Socket("localhost", port);
             write = new ObjectOutputStream(socket.getOutputStream());
             read = new ObjectInputStream(socket.getInputStream());
 
