@@ -18,7 +18,7 @@
         <Label layoutX="173.0" layoutY="193.0" prefHeight="19.0" prefWidth="114.0" text="No account?" />
         <Label layoutX="261.0" layoutY="193.0" prefHeight="19.0" prefWidth="51.0" text="SignUp" textFill="#0615e8" />
         <Button fx:id="btnSignUp" layoutX="264.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleSignUpButtonAction" opacity="0.0" prefHeight="25.0" prefWidth="45.0" />
-        <Button fx:id="btnAccept" layoutX="195.0" layoutY="228.0" mnemonicParsing="false" onAction="#handleAcceptButtonAction" prefHeight="36.0" prefWidth="70.0" text="Accept" />
+        <Button fx:id="btAccept" layoutX="195.0" layoutY="228.0" mnemonicParsing="false" onAction="#handleAcceptButtonAction" prefHeight="36.0" prefWidth="70.0" text="Accept" />
         <ImageView fx:id="imageViewUser" fitHeight="19.0" fitWidth="23.0" layoutX="121.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../resources/images/userIcon.png" />

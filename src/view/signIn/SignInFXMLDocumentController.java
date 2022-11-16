@@ -44,7 +44,7 @@ public class SignInFXMLDocumentController {
     @FXML
     private PasswordField cpPassword;
     @FXML
-    private Button btnAccept;
+    private Button btAccept;
     @FXML
     private Button btnSignUp;
     @FXML
@@ -93,7 +93,7 @@ public class SignInFXMLDocumentController {
         //Login text view sin texto
         cpPassword.setText("");
         //Se desabilita el botton Accept
-        btnAccept.setDisable(true);
+        btAccept.setDisable(true);
         //Se enfoca el campo login
         tfLogin.requestFocus();
     }
@@ -115,20 +115,20 @@ public class SignInFXMLDocumentController {
         if (tfLogin.getText().trim().length() > 25) {
             tfLogin.setText(tfLogin.getText().substring(0, 25));
             new Alert(Alert.AlertType.ERROR, "The maximum lenght for the login is 25 characters.", ButtonType.OK).showAndWait();
-            btnAccept.setDisable(true);
+            btAccept.setDisable(true);
         }
         if (cpPassword.getText().trim().length() > 25) {
             cpPassword.setText(cpPassword.getText().substring(0, 25));
             new Alert(Alert.AlertType.ERROR, "The maximum lenght for the password is 25 characters.", ButtonType.OK).showAndWait();
-            btnAccept.setDisable(true);
+            btAccept.setDisable(true);
         }
 //Validates that both fields are not empty
         if (tfLogin.getText().trim().isEmpty()
                 || cpPassword.getText().trim().isEmpty()) {
-            btnAccept.setDisable(true);
+            btAccept.setDisable(true);
         }//All the data is filled correctly and the button is enabled
         else {
-            btnAccept.setDisable(false);
+            btAccept.setDisable(false);
         }
     }
 
