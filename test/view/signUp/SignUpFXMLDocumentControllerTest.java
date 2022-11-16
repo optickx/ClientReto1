@@ -89,7 +89,7 @@ public class SignUpFXMLDocumentControllerTest extends ApplicationTest {
      * Test that a valid user registers
      */
     @Test
-    public void test6_5_Registers() {
+    public void test2_3_Registers() {
         push(KeyCode.ENTER);
         clickOn("#btnReset");
         //Login
@@ -114,7 +114,7 @@ public class SignUpFXMLDocumentControllerTest extends ApplicationTest {
 
     
     @Test
-    public void test6_2_LoginExistsException(){    
+    public void test2_1_LoginExistsException(){    
         clickOn("#btnReset");
         //Login
         write("roke");
@@ -132,12 +132,12 @@ public class SignUpFXMLDocumentControllerTest extends ApplicationTest {
         clickOn(cpConfirm);
         write("abcd*1234");
         clickOn(btnAccept);
-        verifyThat("Try again", isVisible());
+        verifyThat("LOGIN_EXISTS_ERROR", isVisible());
         
     }
     
     @Test
-    public void test6_4_EmailExistsException(){
+    public void test2_2_EmailExistsException(){
         push(KeyCode.ENTER);
         clickOn("#btnReset");
         //Login
@@ -156,7 +156,7 @@ public class SignUpFXMLDocumentControllerTest extends ApplicationTest {
         clickOn(cpConfirm);
         write("abcd*1234");
         clickOn(btnAccept);
-        verifyThat("Try again", isVisible());
+        verifyThat("EMAIL_EXISTS_ERROR", isVisible());
         
     }
     
