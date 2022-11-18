@@ -158,7 +158,11 @@ public class SignInFXMLDocumentController {
             usSignIn.setLogin(tfLogin.getText());
             usSignIn.setPassword(cpPassword.getText());
             //The factory is used to obtain the implementation, and the method signIn is called, sending the User from above.  
-            response = UserManagerFactory.getAccess().signIn(usSignIn);
+            response = 
+                    UserManagerFactory
+                            .getAccess()
+                                .signIn(usSignIn);
+            
             if (response.getResponseType() != ResponseType.OK) {
                 Alert alert = new Alert(AlertType.WARNING);
                 alert.setTitle("Error");
@@ -167,6 +171,7 @@ public class SignInFXMLDocumentController {
                 alert.showAndWait();
             } else {
                 //Closing SignIn window
+                LOGGER.info("User: " + response.getUser().getLogin() +  " logged in.");
                 this.stageSignIn.close();
                 Stage stageLogged = new Stage();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/logged/Logged.fxml"));
@@ -179,6 +184,14 @@ public class SignInFXMLDocumentController {
 
         } catch (LoginCredentialException | ServerException
                 | LoginFormatException | LoginPasswordFormatException | IOException ex) {
+            if (ex instanceof LoginCredentialException 
+            || ex instanceof LoginCredentialException
+            || ex instanceof LoginPasswordFormatException)
+                LOGGER.severe("Error al introducir los credenciales.");
+            
+            else if (ex instanceof ServerException || ex instanceof IOException)
+                LOGGER.severe("Error en la conexión con el servidor.");
+            
             new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
         }
     }
