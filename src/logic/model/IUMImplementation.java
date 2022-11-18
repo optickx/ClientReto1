@@ -21,11 +21,11 @@ import static logic.objects.message.types.RequestType.SIGNUP;
 public class IUMImplementation implements IClientServer {
 
     /**
-     *
      * @param user
      * @return response with the ResponseType and the whole User
      * @throws ServerException when the server is not started
      */
+    
     @Override
     public Response signIn(User user) throws ServerException {
         Request request = null;

@@ -34,8 +34,8 @@
          </font></Label>
         <Label fx:id="lblLogin" layoutX="356.0" layoutY="134.0" prefHeight="59.0" prefWidth="436.0" textFill="RED" />
         <Label fx:id="lblEmail" layoutX="349.0" layoutY="201.0" prefHeight="59.0" prefWidth="449.0" textFill="RED" />
-        <Label fx:id="lblFullName" layoutX="356.0" layoutY="287.0" prefHeight="17.0" prefWidth="405.0" textFill="RED" />
-        <Label fx:id="lblPassword" layoutX="365.0" layoutY="356.0" prefHeight="17.0" prefWidth="405.0" />
-        <Label fx:id="lblConfirmPassword" layoutX="387.0" layoutY="402.0" prefHeight="59.0" prefWidth="405.0" textFill="RED" />
+        <Label fx:id="lblFullName" layoutX="406.0" layoutY="287.0" prefHeight="17.0" prefWidth="391.0" textFill="RED" />
+        <Label fx:id="lblPassword" layoutX="406.0" layoutY="356.0" prefHeight="17.0" prefWidth="391.0" textFill="#f80000" />
+        <Label fx:id="lblConfirmPassword" layoutX="425.0" layoutY="402.0" prefHeight="59.0" prefWidth="368.0" textFill="RED" />
     </children>
 </Pane>

@@ -76,6 +76,7 @@ public class SignUpFXMLDocumentController {
      */
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
+        LOGGER.info("Signing up");
         try {
             Response response = null;
             //Validates format of the login
@@ -85,7 +86,7 @@ public class SignUpFXMLDocumentController {
                 lblLogin.setText("");
             }
             //Validates the format of the email
-            String patternEmail = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus)";
+            String patternEmail = "([a-z0-9]*)@([a-z]*).([a-z]*)";
             if (!Pattern.matches(patternEmail, tfEmail.getText()) || tfEmail.getText().contains(" ")) {
                 throw new EmailErrorException();
             } else {
@@ -133,15 +134,19 @@ public class SignUpFXMLDocumentController {
             }
 
         } catch (EmailErrorException e) {
+            LOGGER.severe(e.getMessage());
             lblEmail.setText(e.getMessage());
         } catch (PasswordErrorException e) {
+            LOGGER.severe(e.getMessage());
             lblConfirmPassword.setText(e.getMessage());
         } catch (LoginFormatException e) {
+            LOGGER.severe(e.getMessage());
             lblLogin.setText(e.getMessage());
         } catch (FullNameFormatErrorException | ServerException e) {
+            LOGGER.severe(e.getMessage());
             new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).showAndWait();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.severe(ex.getMessage());
 //Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -199,7 +204,6 @@ public class SignUpFXMLDocumentController {
      * @param event event of showing the window
      */
     private void handlerWindowShowing(WindowEvent event) {
-        LOGGER.info("Starting SignUpFXMLDocumentController::handlerWindowShowing");
         //Accept button is disabled
         btnAccept.setDisable(true);
         //Login field is focused
@@ -230,28 +234,33 @@ public class SignUpFXMLDocumentController {
         //accept button
         if (tfLogin.getText().trim().length() > 25) {
             tfLogin.setText(tfLogin.getText().substring(0, 25));
-            new Alert(Alert.AlertType.ERROR, "The maximum length for the login is 25 characters\nCan't start with a digit.", ButtonType.OK).showAndWait();
-            btnAccept.setDisable(true);
+            lblLogin.setText("This field has a limit of 25 characters");
+        } else{
+            lblLogin.setText("");
         }
         if (tfEmail.getText().trim().length() > 25) {
             tfEmail.setText(tfEmail.getText().substring(0, 25));
-            new Alert(Alert.AlertType.ERROR, "The maximum length for the email is 25 characters.", ButtonType.OK).showAndWait();
-            btnAccept.setDisable(true);
+            lblEmail.setText("This field has a limit of 25 characters");
+        } else{
+            lblEmail.setText("");
         }
         if (tfFullName.getText().trim().length() > 25) {
             tfFullName.setText(tfFullName.getText().substring(0, 25));
-            new Alert(Alert.AlertType.ERROR, "The maximum length for the Full name is 25 characters.", ButtonType.OK).showAndWait();
-            btnAccept.setDisable(true);
+            lblFullName.setText("This field has a limit of 25 characters");
+        } else{
+            lblFullName.setText("");
         }
         if (cpPass.getText().trim().length() > 25) {
             cpPass.setText(cpPass.getText().substring(0, 25));
-            new Alert(Alert.AlertType.ERROR, "The maximum length for the password is 25 characters.", ButtonType.OK).showAndWait();
-            btnAccept.setDisable(true);
+            lblPassword.setText("This field has a limit of 25 characters");
+        } else{
+            lblPassword.setText("");
         }
         if (cpConfirm.getText().trim().length() > 25) {
             cpConfirm.setText(cpConfirm.getText().substring(0, 25));
-            new Alert(Alert.AlertType.ERROR, "The maximum length for the password confirmation is 25 characters.", ButtonType.OK).showAndWait();
-            btnAccept.setDisable(true);
+            lblConfirmPassword.setText("This field has a limit of 25 characters");
+        } else{
+            lblConfirmPassword.setText("");
         }
         //If text fields are empty disable accept buttton
         if (tfLogin.getText().trim().isEmpty()

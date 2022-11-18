@@ -11,7 +11,9 @@ public class UserManagerFactory {
    /** * @return an object that implements the interface
     * @see IClientServer
     */
+   private static IUMImplementation implementation = new IUMImplementation();
+    
    public static IClientServer getAccess() {
-        return new IUMImplementation();
+        return implementation;
    }
 }

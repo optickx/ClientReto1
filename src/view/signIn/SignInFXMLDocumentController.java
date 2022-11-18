@@ -157,7 +157,7 @@ public class SignInFXMLDocumentController {
             User usSignIn = new User();
             usSignIn.setLogin(tfLogin.getText());
             usSignIn.setPassword(cpPassword.getText());
-            //The factory is used to obtain the implementation, and the method signIn is called, sending the User from above.  
+            //The factory is used to obtain the implementation, and the method signIn is called, sending the User from above.
             response = UserManagerFactory.getAccess().signIn(usSignIn);
             if (response.getResponseType() != ResponseType.OK) {
                 Alert alert = new Alert(AlertType.WARNING);
