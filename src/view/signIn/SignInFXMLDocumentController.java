@@ -187,10 +187,13 @@ public class SignInFXMLDocumentController {
             if (ex instanceof LoginCredentialException 
             || ex instanceof LoginCredentialException
             || ex instanceof LoginPasswordFormatException)
-                LOGGER.severe("Error al introducir los credenciales.");
+                LOGGER.severe("Error con los credenciales.");
             
             else if (ex instanceof ServerException || ex instanceof IOException)
                 LOGGER.severe("Error en la conexión con el servidor.");
+            
+            else
+                LOGGER.severe("Error durante el logueo en la aplicación.");
             
             new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
         }
