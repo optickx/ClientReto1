@@ -76,28 +76,29 @@ public class SignUpFXMLDocumentController {
      */
     @FXML
     private void handleAcceptButtonAction(ActionEvent event) {
+        LOGGER.info("Trying to make a Registration.");
         try {
             Response response = null;
             //Validates format of the login
             if (Character.isDigit(tfLogin.getText().charAt(0)) || tfLogin.getText().contains(" ")) {
                 throw new LoginFormatException();
-            } else {
+            }/* else {
                 lblLogin.setText("");
-            }
+            }*/
             //Validates the format of the email
             String patternEmail = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus)";
             if (!Pattern.matches(patternEmail, tfEmail.getText()) || tfEmail.getText().contains(" ")) {
                 throw new EmailErrorException();
-            } else {
+            }/* else {
                 lblEmail.setText("");
-            }
+            }*/
 
             //Validates both passwords
             if (!(cpPass.getText().equals(cpConfirm.getText())) || cpPass.getText().contains(" ")) {
                 throw new PasswordErrorException();
-            } else {
+            }/* else {
                 lblConfirmPassword.setText("");
-            }
+            }*/
 
             //Validates that the fullName doesn't have numbers
             for (int i = 0; i < tfFullName.getText().length(); i++) {
@@ -133,16 +134,19 @@ public class SignUpFXMLDocumentController {
             }
 
         } catch (EmailErrorException e) {
+            LOGGER.severe(e.getMessage());
             lblEmail.setText(e.getMessage());
         } catch (PasswordErrorException e) {
+            LOGGER.severe(e.getMessage());
             lblConfirmPassword.setText(e.getMessage());
         } catch (LoginFormatException e) {
+            LOGGER.severe(e.getMessage());
             lblLogin.setText(e.getMessage());
         } catch (FullNameFormatErrorException | ServerException e) {
+            LOGGER.severe(e.getMessage());
             new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).showAndWait();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-//Logger.getLogger(SignUpFXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
         }
     }
 
@@ -263,6 +267,20 @@ public class SignUpFXMLDocumentController {
         } //Else, enable accept button
         else {
             btnAccept.setDisable(false);
+        }
+
+        //Exam Modifications
+        if (!(Character.isDigit(tfLogin.getText().charAt(0))) || !(tfLogin.getText().contains(" "))) {
+            lblLogin.setText("");
+        }
+
+        String patternEmail = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus)";
+        if (Pattern.matches(patternEmail, tfEmail.getText()) || !(tfEmail.getText().contains(" "))) {
+            lblEmail.setText("");
+        }
+
+        if (cpPass.getText().equals(cpConfirm.getText()) || !(cpPass.getText().contains(" "))) {
+            lblConfirmPassword.setText("");
         }
     }
 
